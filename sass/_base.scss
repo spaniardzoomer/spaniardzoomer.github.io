@@ -28,8 +28,7 @@
 }
 
 html {
-    //  Scale down root font size slightly on mobile 
-    // This makes 1rem = 14px instead of 16px, shrinking all UI elements proportionally
+    // Scale down root font size slightly on mobile 
     @media (max-width: 640px) {
         font-size: 14px;
     }

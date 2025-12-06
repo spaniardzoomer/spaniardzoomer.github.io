@@ -1,22 +1,28 @@
-// 1. Theme Logic
-const toggleBtn = document.getElementById('theme-toggle');
-const icon = toggleBtn.querySelector('i');
-const root = document.documentElement;
+document.addEventListener('DOMContentLoaded', () => {
+    // Select ALL theme toggle buttons (Desktop & Mobile)
+    const toggleBtns = document.querySelectorAll('.theme-toggle');
+    const root = document.documentElement;
 
-// Function to update icon based on current theme
-const updateIcon = () => {
-    const isLight = root.getAttribute('data-theme') === 'light';
-    icon.className = isLight ? 'ph ph-moon-stars' : 'ph ph-sun-dim';
-};
+    // Function to update ALL icons
+    const updateIcons = () => {
+        const isLight = root.getAttribute('data-theme') === 'light';
+        toggleBtns.forEach(btn => {
+            const icon = btn.querySelector('i');
+            if(icon) icon.className = isLight ? 'ph ph-moon-stars' : 'ph ph-sun-dim';
+        });
+    };
 
-// Initialize icon on load
-updateIcon();
+    // Initialize
+    updateIcons();
 
-toggleBtn.addEventListener('click', () => {
-    const currentTheme = root.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    
-    root.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateIcon();
+    // Attach Click Event to EACH button
+    toggleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcons();
+        });
+    });
 });

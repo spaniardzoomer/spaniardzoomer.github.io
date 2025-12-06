@@ -1,4 +1,4 @@
-// --- Status Bar ---
+// --- Status Bar (Top) ---
 .status-bar {
   height: 2rem;
   background-color: var(--bg-bar);
@@ -11,15 +11,26 @@
   user-select: none;
   z-index: 50;
   transition: background-color 0.3s;
+  
+  @media (max-width: 640px) {
+    padding: 0 0.5rem;
+    // On mobile, top bar is JUST for navigation
+    justify-content: center; 
+  }
 
   &__workspaces {
     display: flex;
     gap: 1rem;
+    overflow-x: auto; 
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
     
-    // Mobile: Reduce gap and font size
     @media (max-width: 640px) {
       gap: 0.5rem;
       font-size: 0.75rem;
+      // Pushes everything to the right ONLY on mobile
+      // forcing the workspaces to pack to the left.
+      margin-right: auto;
     }
   }
 
@@ -63,24 +74,57 @@
     display: flex;
     gap: 1rem;
 
-    // Mobile: Reduce gap
     @media (max-width: 640px) {
-      gap: 0.5rem;
+       // HIDE completely on mobile (moved to bottom bar)
+       display: none;
     }
 
     .stat {
       @include flex-center-y;
       gap: 0.25rem;
-
       &--browser { color: var(--color-green); }
       &--os { color: var(--color-yellow); }
       &--time { color: var(--text-accent); }
-
-      // RESPONSIVE FIX: Hide stats on screens smaller than 768px (Tablets/Phones)
-      @media (max-width: 768px) {
-        display: none;
-      }
     }
+  }
+}
+
+// --- Bottom Bar (Mobile Only) ---
+.bottom-bar {
+  display: none; // Hidden on Desktop
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3.5rem; // Taller for touch targets
+  background-color: var(--bg-bar);
+  border-top: 1px solid var(--border-dim);
+  z-index: 100;
+  padding: 0 2rem;
+  
+  // Layout
+  align-items: center;
+  justify-content: space-between;
+  
+  @media (max-width: 640px) {
+    display: flex;
+  }
+  
+  // Re-use theme toggle styles but make it bigger
+  .theme-toggle {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    color: var(--color-yellow);
+  }
+
+  .mobile-clock {
+    @include flex-center-y;
+    gap: 0.5rem;
+    color: var(--text-accent);
+    font-weight: bold;
+    font-size: 1rem;
   }
 }
 
@@ -92,9 +136,10 @@
   flex-direction: column;
   min-height: 0;
 
-  // Mobile: Reduce padding to maximize screen space
   @media (max-width: 640px) {
     padding: 0.5rem;
+    // Add bottom padding so content isn't hidden behind bottom bar
+    padding-bottom: 4rem; 
   }
 }
 
@@ -123,7 +168,6 @@
       font-weight: bold;
       color: var(--text-accent);
       
-      // Mobile: truncate title if it gets too long
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -156,7 +200,6 @@
     overflow-y: auto;
     min-height: 0;
 
-    // Mobile: Less internal padding
     @media (max-width: 640px) {
       padding: 1rem;
     }
@@ -171,7 +214,6 @@
   font-size: 0.875rem;
   flex-shrink: 0;
 
-  // Mobile: Wrap the prompt if the path is super long
   @media (max-width: 640px) {
     flex-wrap: wrap;
     gap: 0.25rem;
