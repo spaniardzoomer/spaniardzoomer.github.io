@@ -11,5 +11,5 @@ jobs:
         env:
           PAGES_BRANCH: master
           BUILD_DIR: .
-          TOKEN: ${{ secrets.TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }
           REPOSITORY: spaniardzoomer/spaniardzoomer.github.io
