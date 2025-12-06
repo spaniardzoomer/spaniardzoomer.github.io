@@ -15,6 +15,12 @@
   &__workspaces {
     display: flex;
     gap: 1rem;
+    
+    // Mobile: Reduce gap and font size
+    @media (max-width: 640px) {
+      gap: 0.5rem;
+      font-size: 0.75rem;
+    }
   }
 
   &__center {
@@ -57,6 +63,11 @@
     display: flex;
     gap: 1rem;
 
+    // Mobile: Reduce gap
+    @media (max-width: 640px) {
+      gap: 0.5rem;
+    }
+
     .stat {
       @include flex-center-y;
       gap: 0.25rem;
@@ -64,6 +75,11 @@
       &--browser { color: var(--color-green); }
       &--os { color: var(--color-yellow); }
       &--time { color: var(--text-accent); }
+
+      // RESPONSIVE FIX: Hide stats on screens smaller than 768px (Tablets/Phones)
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
   }
 }
@@ -75,6 +91,11 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+
+  // Mobile: Reduce padding to maximize screen space
+  @media (max-width: 640px) {
+    padding: 0.5rem;
+  }
 }
 
 // --- Window Frame ---
@@ -101,6 +122,12 @@
       font-size: 0.75rem;
       font-weight: bold;
       color: var(--text-accent);
+      
+      // Mobile: truncate title if it gets too long
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 60vw;
     }
 
     .controls {
@@ -128,6 +155,11 @@
     padding: 1.5rem;
     overflow-y: auto;
     min-height: 0;
+
+    // Mobile: Less internal padding
+    @media (max-width: 640px) {
+      padding: 1rem;
+    }
   }
 }
 
@@ -138,6 +170,12 @@
   margin-bottom: 1.5rem;
   font-size: 0.875rem;
   flex-shrink: 0;
+
+  // Mobile: Wrap the prompt if the path is super long
+  @media (max-width: 640px) {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
 
   .arrow { color: var(--color-green); }
   .path { color: var(--text-accent); }
