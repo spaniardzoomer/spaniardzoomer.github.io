@@ -1,0 +1,208 @@
+// Theme Toggle Button
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-yellow);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: rotate(15deg);
+  }
+}
+
+// --- Music Player ---
+.music-player {
+  @include flex-center-y;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+
+  &__icon { color: var(--color-green); }
+  &__content {
+    width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  &__song-title {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-text 12s linear infinite;
+  }
+
+  &:hover { color: var(--text-accent); }
+}
+
+@keyframes scroll-text {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+// --- Navigation Links ---
+.nav-link {
+  @include flex-center-y;
+  gap: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--text-dim);
+  transition: all 0.2s ease;
+
+  &:hover { background-color: var(--bg-hover); }
+
+  &--active {
+    background-color: var(--text-dim);
+    color: var(--bg-body);
+  }
+}
+
+// --- Grid/Cards ---
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 768px) { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.card {
+  border: 1px solid var(--border-dim);
+  padding: 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  display: block;
+
+  &:hover {
+    background-color: var(--bg-hover);
+    .card__title { text-decoration: underline; }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+  }
+
+  &__title {
+    font-weight: bold;
+    color: var(--text-accent);
+    font-size: 1.125rem;
+  }
+  &__date { font-size: 0.75rem; color: var(--text-dim); }
+  &__desc {
+    font-size: 0.875rem;
+    color: var(--text-main);
+    margin-bottom: 0.75rem;
+  }
+  &__tags {
+    display: flex;
+    gap: 0.5rem;
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 0.125rem 0.5rem;
+      background-color: var(--bg-hover);
+      color: var(--color-green);
+      border-radius: 0.125rem;
+    }
+  }
+}
+
+// --- Gallery Grid Styles ---
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0.5rem;
+
+  .gallery-item {
+    height: 350px;
+    min-width: 0;
+
+    .window__body.gallery-body {
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border: none;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// --- LS List View (Section) ---
+.ls-grid {
+  display: grid;
+  grid-template-columns: max-content max-content max-content max-content auto;
+  column-gap: 1.5rem;
+  row-gap: 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 1.3rem;
+}
+
+.ls-total {
+  grid-column: 1 / -1;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+}
+
+.ls-perms { color: var(--text-dim); }
+.ls-user { color: var(--color-yellow); }
+.ls-size { color: var(--color-green); text-align: right; }
+.ls-date { color: var(--text-dim); }
+.ls-name {
+  color: var(--text-accent);
+  font-weight: bold;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+// --- 404 Error Page ---
+.error-page {
+  color: var(--text-main);
+
+  &__crash-box {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border: 1px dashed var(--color-red);
+    background-color: color-mix(in srgb, var(--color-red), transparent 95%);
+    border-radius: 0.25rem;
+
+    .crash-message {
+      margin: 0;
+      color: var(--color-red);
+      font-weight: bold;
+      font-family: monospace;
+    }
+    .crash-details {
+      margin: 0.5rem 0 0 0;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      font-family: monospace;
+    }
+  }
+}

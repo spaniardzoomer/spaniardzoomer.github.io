@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block prompt_path %}~/{% endblock %}
+{% block prompt_header %}~/{% endblock %}
+{% block prompt_cmd %}cat ~/index.md{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="text-nord-4 leading-relaxed max-w-2xl markdown-content">
+        {{ section.content | safe }}
+    </div>
+</div>
+{% endblock content %}

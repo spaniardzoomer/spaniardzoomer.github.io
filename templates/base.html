@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+
+    <!-- Link to the compiled CSS -->
+    <link rel="stylesheet" href="{{ get_url(path="main.css") }}">
+
+    <!-- Icons (Phosphor Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Inline script to prevent flash of wrong theme -->
+    <script>
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+
+    <script src="/js/clock.js" defer></script>
+    <script src="/js/theme.js" defer></script>
+    <script type="module" src="/js/mermaid.js" defer></script>
+    <script src="/js/music-player.js" defer></script>
+    <script src="/js/mermaid.js" defer></script>
+    <script src="/js/client-stats.js" defer></script>
+</head>
+
+<body>
+
+    {# Handle 404 pages where current_path is missing #} {% set current_path = current_path | default(value="") %}
+
+    <!-- STATUS BAR -->
+    <nav class="status-bar">
+        <!-- Workspaces / Navigation -->
+        <div class="status-bar__workspaces">
+            {% for item in config.extra.menu %}
+            <a href="{{ item.url }}" class="nav-link {% if item.url == '/' %}{% if current_path == '/' %}nav-link--active{% endif %}{% else %}{% if current_path is starting_with(item.url) %}nav-link--active{% endif %}{% endif %}">
+                <i class="ph {{ item.logo }}"></i>
+                <span>{{ item.name }}</span>
+            </a>
+            {% endfor %}
+
+            <!-- Placeholder as I have not written any articles about my projects yet -->
+            <a href="https://gitlab.com/users/rinuxu/projects" target="_blank"
+               class="nav-link {% if current_path is starting_with("/projects") %}nav-link--active{% endif %}">
+                <i class="ph ph-code"></i> <span>CODE</span>
+            </a>
+        </div>
+
+        <!-- Center Title -->
+        <div class="status-bar__center">
+            <div class="status-bar__title">
+                rafaeru's corner
+            </div>
+
+            <!-- SOCIALS INJECTED HERE -->
+            {% if config.extra.socials %}
+            <div class="status-bar__socials">
+                {% for social in config.extra.socials %}
+                <a href="{{ social.url }}" target="_blank" title="{{ social.name }}">
+                    <i class="ph ph-{{ social.icon }}-logo"></i>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- System Stats -->
+        <div class="status-bar__stats">
+
+            <!-- THEME TOGGLE BUTTON -->
+            <button id="theme-toggle" class="theme-toggle" title="Toggle Light/Dark Theme">
+                <i class="ph ph-sun-dim"></i>
+            </button>
+
+            <!-- The Music Player -->
+            <div class="music-player" id="music-player">
+                <div class="music-player__icon" id="music-icon">
+                    <i class="ph ph-play"></i>
+                </div>
+                <div class="music-player__content">
+                    <div class="music-player__scroll">
+                        <span class="music-player__song-title">Lofi Girl - beats to relax/study to</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Browser -->
+            <div class="stat stat--browser" title="Your Browser">
+                <i class="ph ph-globe"></i>
+                <span id="stat-browser">Web</span>
+            </div>
+
+            <!-- Platform -->
+            <div class="stat stat--os" title="Your OS Platform">
+                <i class="ph ph-terminal-window"></i>
+                <span id="stat-os">Unknown</span>
+            </div>
+            <div class="stat stat--time"><i class="ph ph-clock"></i> <span id="clock">12:00</span></div>
+        </div>
+    </nav>
+
+    <!-- MAIN WINDOW LAYOUT -->
+    <main class="main-layout">
+        <!-- This allows us to replace the single window with a grid in gallery.html -->
+        {% block root_window %}
+        <div class="window">
+
+            <!-- Window Header -->
+            <div class="window__header">
+                <span class="title">
+                    term {% block prompt_path_header %}~/{% endblock %}
+                </span>
+                <div class="controls">
+                    <div class="dot dot--yellow"></div>
+                    <div class="dot dot--green"></div>
+                    <div class="dot dot--red"></div>
+                </div>
+            </div>
+
+            <!-- Window Content -->
+            <div class="window__body">
+
+                <!-- Terminal Prompt -->
+                <div class="prompt-line">
+                    <span class="path">root@rafaerus_corner</span>
+                    <span class="arrow">➜</span>
+                    <span class="path">{% block prompt_path %}~/{% endblock %}</span>
+                    <span class="cmd">{% block prompt_cmd %}ls -la{% endblock %}</span>
+                </div>
+
+                <!-- Content Injection -->
+                <div class="content-area">
+                    {% block content %}{% endblock content %}
+                </div>
+            </div>
+        </div>
+        {% endblock root_window %}
+    </main>
+</body>
+
+</html>

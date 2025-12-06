@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block prompt_path %}/var/www/html{% endblock %}
+{% block prompt_path_header %}/var/www/html{% endblock %}
+
+{% block prompt_cmd %}curl -I {{ current_url | default(value="UNKNOWN_URL") | safe }}{% endblock %}
+
+{% block content %}
+<div style="color: var(--text-main);">
+    <!-- Added inline styles to override the global .content-area h1 rules -->
+    <h1 class="error-page__title"
+        style="border: none; font-size: 4rem; color: var(--color-red); padding-bottom: 0; margin-bottom: 0.5rem;">
+        404
+    </h1>
+    <!-- Added inline styles to override the global .content-area h2 rules -->
+    <h2 class="error-page__subtitle" style="border: none; color: var(--text-dim); margin-top: 0;">Page Not Found</h2>
+
+    <div class="error-page__crash-box">
+        <p class="crash-message">
+            [ERROR] Connection refused: GET {{ current_url | default(value="/") | safe }}
+        </p>
+        <p class="crash-details">
+            Status: 404 Not Found<br>
+            Time: <span id="error-time">--:--:--</span>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('error-time').innerText = new Date().toISOString();
+    </script>
+</div>
+{% endblock content %}

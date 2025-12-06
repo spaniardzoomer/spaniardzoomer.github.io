@@ -1,0 +1,36 @@
+# The URL the site will be built for
+base_url = "https://rafaeru.com"
+title = "Rafaeru's corner"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = false
+
+taxonomies = [
+    {name = "tags"},
+]
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = true
+
+[extra]
+# Put all your custom variables here
+
+socials = [
+  { name = "linkedin", url = "https://www.linkedin.com/in/rafael-jose-rodriguez/", icon = "linkedin" },
+  { name = "gitlab", url = "https://gitlab.com/rinuxu", icon = "gitlab" },
+]
+
+user = "rafa"
+
+menu = [
+  { name = "HOME", url = "/", logo = "ph-house"},
+  { name = "BLOG", url = "/blog", logo = "ph-file-text"},
+  # { name = "CODE", url = "/projects", logo = "ph-code"},
+  { name = "CONTACT", url = "/contact", logo = "ph-envelope"},
+  { name = "TAGS", url = "/tags", logo = "ph-tag"},
+]

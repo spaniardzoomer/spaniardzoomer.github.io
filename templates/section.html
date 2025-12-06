@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block window_path %}
+    {% if section.pages %}
+        {# Blog/Projects List #}
+        ~/{{ section.path | trim_start_matches(pat="/") }}list.md
+    {% else %}
+        {# Single Section: Shows directory name #}
+        ~/{{ section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") }}
+    {% endif %}
+{% endblock %}
+
+{% block prompt_path %}
+    {% if section.pages %}
+        {# Inside the directory #}
+        ~/{{ section.path | trim_start_matches(pat="/") }}
+    {% else %}
+        {# At root, running cat on the file #}
+        ~/
+    {% endif %}
+{% endblock %}
+
+{% block prompt_cmd %}
+    {% if section.pages %}
+        ls -la
+    {% else %}
+        cat ~/{{ section.path | trim_start_matches(pat="/") }}index.md
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if section.pages %}
+        <!-- LIST VIEW (ls -la style) -->
+        <div class="ls-grid">
+            <div class="ls-total">total {{ section.pages | length }}</div>
+
+            {% for page in section.pages %}
+                <!-- Permissions -->
+                <span class="ls-perms">-rw-r--r--</span>
+                
+                <!-- User -->
+                <span class="ls-user">{{ config.extra.user | default(value="user") }}</span>
+                
+                <!-- Size / Reading Time -->
+                <span class="ls-size">
+                    {% if page.reading_time %}{{ page.reading_time }}m{% else %}4.0K{% endif %}
+                </span>
+                
+                <!-- Date (With Fallback for pages without date) -->
+                <span class="ls-date">
+                    {% if page.date %}
+                        {{ page.date }}
+                    {% endif %}
+                </span>
+                
+                <!-- Filename (Title) -->
+                <a href="{{ page.permalink }}" class="ls-name">
+                    {{ page.title }}
+                </a>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <!-- SINGLE PAGE VIEW (Render the _index.md content) -->
+        <article class="post-layout">
+            <header class="post-header">
+                <h1 class="post-title">{{ section.title }}</h1>
+            </header>
+
+            <div class="post-content">
+                {{ section.content | safe }}
+            </div>
+        </article>
+    {% endif %}
+{% endblock content %}

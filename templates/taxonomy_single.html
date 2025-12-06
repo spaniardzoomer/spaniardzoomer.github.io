@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block window_path %}~/{{ taxonomy.name }}/{{ term.name }}/{% endblock %}
+{% block prompt_path %}~/{{ taxonomy.name }}/{{ term.name }}/{% endblock %}
+{% block prompt_cmd %}grep -r "{{ term.name }}" .{% endblock %}
+
+{% block content %}
+<div class="content-area">
+    <!-- Header showing what we are filtering by -->
+    <div style="margin-bottom: 2rem; border-bottom: 1px dashed #4C566A; padding-bottom: 1rem;">
+        <span style="color: #88C0D0; font-weight: bold;">Filter:</span> 
+        <span style="color: #A3BE8C;">#{{ term.name }}</span>
+    </div>
+
+    <div class="grid-container">
+        <!-- Loop through all pages tagged with this term -->
+        {% for page in term.pages %}
+        <a href="{{ page.permalink }}" class="card">
+            <div class="card__header">
+                <span class="card__title">{{ page.title }}</span>
+                <span class="card__date">{{ page.date }}</span>
+            </div>
+            
+            <p class="card__desc">
+                {{ page.description | default(value=page.summary) | default(value="No description provided.") }}
+            </p>
+
+            {% if page.taxonomies.tags %}
+            <div class="card__tags">
+                {% for tag in page.taxonomies.tags %}
+                <!-- Highlight the active tag, dim the others -->
+                <span class="tag" style="{% if tag == term.name %}color: #88C0D0; background: #4C566A;{% endif %}">
+                    #{{ tag }}
+                </span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,21 @@
+<div class="note-box note-{{ type | default(value="info") }}">
+    <div class="note-header">
+        <!-- Icon Logic -->
+        {% if type == "tip" %}
+            <i class="ph ph-lightbulb"></i>
+        {% elif type == "warning" %}
+            <i class="ph ph-warning"></i>
+        {% elif type == "alert" %}
+            <i class="ph ph-warning-octagon"></i>
+        {% else %}
+            <i class="ph ph-info"></i>
+        {% endif %}
+        
+        <!-- Title -->
+        <span class="note-title">{{ title | default(value="Note") }}</span>
+    </div>
+    
+    <div class="note-content">
+        {{ body | markdown | safe }}
+    </div>
+</div>

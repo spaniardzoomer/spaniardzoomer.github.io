@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block window_path %}~/{{ taxonomy.name }}/{% endblock %}
+{% block prompt_path %}~/{{ taxonomy.name }}/{% endblock %}
+{% block prompt_cmd %}ls -F{% endblock %}
+
+{% block content %}
+<div class="content-area">
+    <h1 class="post-title"># {{ taxonomy.name }}</h1>
+    
+    <div class="grid-container">
+        {% for term in terms %}
+        <a href="{{ term.permalink }}" class="card">
+            <div class="card__header" style="margin-bottom: 0;">
+                <span class="card__title">
+                    <i class="ph ph-folder"></i> {{ term.name }}
+                </span>
+                <span class="card__date" style="font-size: 0.9em;">
+                    {{ term.pages | length }} items
+                </span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
