@@ -1,6 +1,6 @@
 +++
 title = "Chisai-os"
-date = 2025-12-30
+description = "A minimal hobby operating system written in C for the x86_64 platform."
+[extra]
+repo = "https://gitlab.com/rinuxu/chisai-os"
 +++
-
-Rustyvoxel project

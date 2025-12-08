@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 <!-- Automatically set the window title to the file path -->
-{% block prompt_path_header %}~/{{ page.relative_path }}{% endblock %}
+{% block window_path %}~/{{ page.relative_path }}{% endblock %}
 {% block prompt_cmd %}cat {{ page.relative_path | split(pat="/") | last }}{% endblock %}
 
 <!-- Automatically set the prompt directory -->

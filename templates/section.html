@@ -1,13 +1,8 @@
 {% extends "base.html" %}
 
 {% block window_path %}
-    {% if section.pages %}
-        {# Blog/Projects List #}
-        ~/{{ section.path | trim_start_matches(pat="/") }}list.md
-    {% else %}
-        {# Single Section: Shows directory name #}
-        ~/{{ section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") }}
-    {% endif %}
+    {# Single Section: Shows directory name #}
+    ~/{{ section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") }}
 {% endblock %}
 
 {% block prompt_path %}
@@ -52,11 +47,21 @@
                         {{ page.date }}
                     {% endif %}
                 </span>
-                
-                <!-- Filename (Title) -->
-                <a href="{{ page.permalink }}" class="ls-name">
-                    {{ page.title }}
-                </a>
+                {% if page.extra.repo %}
+                    <a href="{{ page.extra.repo }}" target="_blank" class="ls-name" style="color: var(--text-accent-2);">
+                        {{ page.title }} <span style="color: var(--text-dim); font-weight: normal; opacity: 0.8;">-> {{ page.extra.repo }}</span>
+                    </a>
+                {% else %}
+                    <a href="{{ page.permalink }}" class="ls-name">
+                        {{ page.title }}
+                    </a>
+                {% endif %}
+
+                {% if page.description %}
+                    <div style="grid-column: 1 / -1; color: var(--text-dim); font-size: 0.85em; margin-top: -0.25rem; padding-left: 1rem; opacity: 0.8;">
+                        # {{ page.description }}
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
 

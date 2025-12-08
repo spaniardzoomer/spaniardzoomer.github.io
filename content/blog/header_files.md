@@ -2,7 +2,7 @@
 title = "Why do we use header files?"
 date = 2025-11-30
 [taxonomies]
-tags = ["c", "low-level"]
+tags = ["c", "low-level", "linker"]
 +++
 
 # Understanding C Header Files and the Linker
@@ -36,12 +36,14 @@ main.c:6:18: error: implicit declaration of function ‘add’ [-Wimplicit-funct
       |                  ^~~
 ```
 
-In older versions of compilers (or the C standard—I'm not sure which—), this used to just be a warning, and you had to manually pass a flag to GCC to treat it as an error. **This** default behavior is much better.
+{% note(title="Did you know?", type="info") %}
+In older versions of compilers (or the C standard—I'm not sure which—), this used to be just a warning. The reason is that implicit function declarations were allowed, and assummed a default return type of `int`. You had to manually pass a flag to GCC to treat it as an error.
+{% end %}
 
 The error happens because when the compiler encounters a function call, it needs to know:
 
-1.  The size and type of the parameters.
-2.  The size and type of the return value.
+1. The size and type of the parameters.
+2. The size and type of the return value.
 
 The assembly code the compiler generates depends entirely on these factors. Since I'm calling a function `add` and the compiler has no idea about those details yet, it fails.
 
@@ -110,17 +112,17 @@ flowchart LR
     style Obj2 fill:#000,stroke:#fff,color:#fff
 {% end %} 
 
-1.  **The Preprocessor:** It takes your source code and handles instructions starting with `#` (like `#include`, `#define`). It processes macros and substitutes text.
-2.  **The Compiler:** It takes the output of the preprocessor and translates high-level C into Assembly code (instructions like `mov`, `push`, etc.).
-3.  **The Assembler:** It takes that Assembly code and translates it into machine code specific to your architecture, spitting out an **Object File** (`.o`).
-4.  **The Linker:** Finally, the linker takes these object files—along with external libraries—and produces the final executable (in the case of Linux, an `ELF` file).
+1. **The Preprocessor:** It takes your source code and handles instructions starting with `#` (like `#include`, `#define`). It processes macros and substitutes text.
+2. **The Compiler:** It takes the output of the preprocessor and translates high-level C into Assembly code (instructions like `mov`, `push`, etc.).
+3. **The Assembler:** It takes that Assembly code and translates it into machine code specific to your architecture, spitting out an **Object File** (`.o`).
+4. **The Linker:** Finally, the linker takes these object files—along with external libraries—and produces the final executable (in the case of Linux, an `ELF` file).
 
 ### The Linker's Job
 
 The Linker has two main responsibilities:
 
-1.  **Ordering:** It decides how to arrange the code from various object files into the final executable.
-2.  **Symbol Resolution:** This is why our previous error changed.
+1. **Ordering:** It decides how to arrange the code from various object files into the final executable by following a *linker script*.
+2. **Symbol Resolution:** This is why our previous error changed.
 
 A **symbol** is essentially a name we give to a region of memory (like variable names `a`, `b`, or function names `add`, `printf`).
 
@@ -253,8 +255,8 @@ If I compile this, **it will work**, but the result will be garbage (e.g., sayin
 
 Why is that?
 
-1.  `main.c` relies on the header file. It thinks `add` takes integers, so it sets up the assembly to pass integers.
-2.  `math.c` expects floats. It interprets those bits as floating-point numbers (which use IEEE 754, totally different from integer representation).
+1. `main.c` relies on the header file. It thinks `add` takes integers, so it sets up the assembly to pass integers.
+2. `math.c` expects floats. It interprets those bits as floating-point numbers (which use IEEE 754, totally different from integer representation).
 
 To prevent this, **always include the header file in the implementation file (`math.c`) as well.**
 
@@ -273,8 +275,8 @@ Now, if the types don't match, the compiler and your LSP will catch the conflict
 
 You might wonder why we sometimes use quotes and sometimes angle brackets:
 
-- `#include <stdio.h>`: Used for system libraries. The linker searches in specific system directories (like `/usr/include`).
-- `#include "math.h"`: Used for your own files. The linker searches in the current directory first.
+- `#include <stdio.h>`: Used for system libraries. The compiler searches in specific system directories (like `/usr/include`).
+- `#include "math.h"`: Used for your own files. The compiler searches in the current directory first.
 
 ## Why Do We Still Use Header Files?
 
@@ -312,6 +314,11 @@ struct _Text {
 Finally, why doesn't C just handle this automatically like modern languages?
 
 C was created a long time ago when computers had extremely limited memory. The compiler couldn't hold the information for the entire project in memory at once. It had to treat every `.c` file as an individual, isolated **Translation Unit**.
+
+
+{% note(title="Note", type="info") %}
+A Translation Unit is the result of running the preprocessor on one .c file. That means all included headers become part of that TU.
+{% end %}
 
 The compiler doesn't know about other files; it only knows what's in the current file. That's why we, the programmers, have to provide header files to "bridge the gap" and promise the compiler that the symbols will exist later during linking.
 

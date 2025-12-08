@@ -2,7 +2,7 @@
 title = "Countries I've Been To"
 +++
 
-{% note(title="Info", type="info") %}
+{% note(title="Note", type="info") %}
 All the pictures shown here were taken by me.
 {% end %}
 

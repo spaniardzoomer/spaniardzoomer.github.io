@@ -30,7 +30,7 @@ user = "rafa"
 menu = [
   { name = "HOME", url = "/", logo = "ph-house"},
   { name = "BLOG", url = "/blog", logo = "ph-file-text"},
-  # { name = "CODE", url = "/projects", logo = "ph-code"},
+  { name = "CODE", url = "/projects", logo = "ph-code"},
   { name = "CONTACT", url = "/contact", logo = "ph-envelope"},
   { name = "TAGS", url = "/tags", logo = "ph-tag"},
 ]

@@ -47,12 +47,6 @@
                 <span>{{ item.name }}</span>
             </a>
             {% endfor %}
-
-            <!-- Placeholder as I have not written any articles about my projects yet -->
-            <a href="https://gitlab.com/users/rinuxu/projects" target="_blank"
-               class="nav-link {% if current_path is starting_with("/projects") %}nav-link--active{% endif %}">
-                <i class="ph ph-code"></i> <span>CODE</span>
-            </a>
         </div>
 
         <!-- Center Title -->
@@ -117,7 +111,7 @@
             <!-- Window Header -->
             <div class="window__header">
                 <span class="title">
-                    term {% block prompt_path_header %}~/{% endblock %}
+                    term {% block window_path %}~/{% endblock %}
                 </span>
                 <div class="controls">
                     <div class="dot dot--yellow"></div>
