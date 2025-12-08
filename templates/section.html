@@ -6,20 +6,14 @@
 {% endblock %}
 
 {% block prompt_path %}
-    {% if section.pages %}
-        {# Inside the directory #}
-        ~/{{ section.path | trim_start_matches(pat="/") }}
-    {% else %}
-        {# At root, running cat on the file #}
-        ~/
-    {% endif %}
+    ~/{{ section.path | trim_start_matches(pat="/") }}
 {% endblock %}
 
 {% block prompt_cmd %}
     {% if section.pages %}
         ls -la
     {% else %}
-        cat ~/{{ section.path | trim_start_matches(pat="/") }}index.md
+        cat index.md
     {% endif %}
 {% endblock %}
 

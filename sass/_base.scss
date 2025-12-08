@@ -14,24 +14,19 @@
   font-display: swap;
 }
 
-// --- Mixins ---
 @mixin flex-center-y {
   display: flex;
   align-items: center;
 }
 
-// --- Reset & Base ---
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
 html {
-    // Scale down root font size slightly on mobile 
-    @media (max-width: 640px) {
-        font-size: 14px;
-    }
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
 }
 
 body {
@@ -39,6 +34,10 @@ body {
   padding: 0;
   font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
   background-color: var(--bg-body);
+  
+  // VIGNETTE EFFECT: Adds depth to the background
+  background-image: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+  
   color: var(--text-main);
   height: 100vh;
   width: 100vw;
@@ -53,30 +52,42 @@ a {
   color: inherit;
 }
 
+// --- Custom Scrollbar (Nerdy & Minimal) ---
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--bg-body);
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--text-dim);
-  border-radius: 4px;
-
-  &:hover {
-    background: var(--text-accent-2);
-  }
+  background: var(--border-dim);
+  border-radius: 0; // Square corners for terminal feel
+  &:hover { background: var(--text-dim); }
 }
 
-// --- Global Animations ---
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
 }
 
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(1rem); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes scroll-text {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }

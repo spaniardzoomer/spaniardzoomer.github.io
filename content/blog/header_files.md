@@ -5,8 +5,6 @@ date = 2025-11-30
 tags = ["c", "low-level", "linker"]
 +++
 
-# Understanding C Header Files and the Linker
-
 Hey everyone. Today I want to talk a little bit about **H**eader **F**iles in C and the Linker. I feel like this is a topic that doesn't get touched on enough.
 
 In my case, back when I was at university, they explained everything there was to know about compilers, but they never really talked **about** the linker or the linking process—and I think it's actually quite important. So, today I'm going to explain how it works.
@@ -154,9 +152,7 @@ You can use the `-M` flag to tell `objdump` to use the Intel syntax, which I bel
   20:    e8 00 00 00 00           call   25 <main+0x25>
   25:    89 45 fc                 mov    DWORD PTR [rbp-0x4],eax
   28:    8b 45 fc                 mov    eax,DWORD PTR [rbp-0x4]
-  2b:    48 8d 15 00 00 00 00     lea    rdx,[rip+0x0]        # 32 <main+0x32>
-  32:    89 c6                    mov    esi,eax
-  34:    48 89 d7                 mov    rdi,rdx
+    ...
   37:    b8 00 00 00 00           mov    eax,0x0
   3c:    e8 00 00 00 00           call   41 <main+0x41>
   41:    b8 00 00 00 00           mov    eax,0x0

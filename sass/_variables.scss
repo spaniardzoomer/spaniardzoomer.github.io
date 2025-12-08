@@ -2,7 +2,7 @@
 /// A natural pine, faux-pas minimal, soothing and comfortable color palette.
 /// @link https://rosepinetheme.com/
 
-// --- Rosé Pine Main (Dark Mode) ---
+// --- Rosé Pine Palette ---
 $rp-base: #191724;
 $rp-surface: #1f1d2e;
 $rp-overlay: #26233a;
@@ -16,7 +16,7 @@ $rp-pine: #31748f; // Blue/Green
 $rp-foam: #9ccfd8; // Cyan
 $rp-iris: #c4a7e7; // Purple
 
-// --- Rosé Pine Dawn (Light Mode) ---
+// --- Rosé Pine Dawn ---
 $rp-dawn-base: #faf4ed;
 $rp-dawn-surface: #fffaf3;
 $rp-dawn-overlay: #f2e9e1;
@@ -30,72 +30,56 @@ $rp-dawn-pine: #286983;
 $rp-dawn-foam: #56949f;
 $rp-dawn-iris: #907aa9;
 
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrains Mono Regular Nerd Font Complete.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrains Mono Bold Nerd Font Complete.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-// --- Theming System (CSS Variables) ---
 :root {
   // Default: Dark Mode (Rosé Pine Main)
   --bg-body: #{$rp-base};
-  --bg-window: #{rgba($rp-surface, 0.95)};
-  --bg-header: #{rgba($rp-base, 0.5)};
-  --bg-bar: #{$rp-surface};
+  --bg-window: #{rgba($rp-surface, 0.85)}; // More transparent for blur
+  --bg-header: #{rgba($rp-base, 0.6)};
+  --bg-bar: #{rgba($rp-surface, 0.9)};
   --bg-hover: #{$rp-overlay};
-  --bg-prompt: #{$rp-base};
+  --bg-prompt: transparent;
 
   --text-main: #{$rp-text};
   --text-dim: #{$rp-subtle};
-  --text-accent: #{$rp-rose}; // Rose (The signature pink)
-  --text-accent-2: #{$rp-iris}; // Iris (Purple)
+  --text-accent: #{$rp-rose}; 
+  --text-accent-2: #{$rp-iris}; 
 
-  --text-code: #{$rp-gold}; // Gold for code
-  --bg-code: #{$rp-overlay};
+  --text-code: #{$rp-gold}; 
+  --bg-code: #{rgba($rp-overlay, 0.5)};
 
   --border-dim: #{$rp-overlay};
   --border-active: #{$rp-rose};
 
-  --color-green: #{$rp-pine}; // Using Pine as Green
+  --color-green: #{$rp-pine};
   --color-yellow: #{$rp-gold};
   --color-red: #{$rp-love};
 
-  // Mermaid Filter: Inverts colors for dark mode
   --mermaid-filter: invert(1) hue-rotate(180deg);
+  
+  // New Variable for Glow
+  --glow-accent: 0 0 15px #{rgba($rp-rose, 0.3)};
 }
 
 :root[data-theme="light"] {
   // Light Mode (Rosé Pine Dawn)
   --bg-body: #{$rp-dawn-base};
-  --bg-window: #{rgba($rp-dawn-surface, 0.95)};
+  --bg-window: #{rgba($rp-dawn-surface, 0.9)};
   --bg-header: #{rgba($rp-dawn-base, 0.8)};
-  --bg-bar: #{$rp-dawn-surface};
+  --bg-bar: #{rgba($rp-dawn-surface, 0.95)};
   --bg-hover: #{$rp-dawn-overlay};
-  --bg-prompt: #{$rp-dawn-base};
+  --bg-prompt: transparent;
 
-  --text-code: #{$rp-dawn-love}; // Reddish/Rose for code in light mode
+  --text-code: #{$rp-dawn-love}; 
   --bg-code: #{$rp-dawn-surface};
 
-  --text-main: #{$rp-dawn-text}; // Deep purple/grey text
+  --text-main: #{$rp-dawn-text}; 
   --text-dim: #{$rp-dawn-subtle};
-  --text-accent: #{$rp-dawn-iris}; // Iris stands out well on white
+  --text-accent: #{$rp-dawn-iris}; 
   --text-accent-2: #{$rp-dawn-pine};
 
   --border-dim: #{$rp-dawn-overlay};
   --border-active: #{$rp-dawn-rose};
 
-  // Mermaid Filter: None for light mode
   --mermaid-filter: none;
+  --glow-accent: none;
 }

@@ -1,63 +1,26 @@
-// Theme Toggle Button
-.theme-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-yellow);
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: rotate(15deg);
-  }
-}
-
-// --- Music Player ---
-.music-player {
-  @include flex-center-y;
-  gap: 0.75rem;
-  cursor: pointer;
-  color: var(--text-main);
-  transition: all 0.2s ease;
-
-  &__icon { color: var(--color-green); }
-  &__content {
-    width: 100px;
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
-  &__song-title {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scroll-text 12s linear infinite;
-  }
-
-  &:hover { color: var(--text-accent); }
-}
-
-@keyframes scroll-text {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
 // --- Navigation Links ---
 .nav-link {
   @include flex-center-y;
   gap: 0.5rem;
-  padding: 0.125rem 0.5rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 0.25rem;
   color: var(--text-dim);
   transition: all 0.2s ease;
+  border: 1px solid transparent;
 
-  &:hover { background-color: var(--bg-hover); }
+  &:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-main);
+    border-color: var(--border-dim);
+  }
 
   &--active {
-    background-color: var(--text-dim);
-    color: var(--bg-body);
+    background-color: var(--bg-hover);
+    color: var(--text-accent);
+    border: 1px solid var(--border-active);
+    box-shadow: 0 0 10px -5px var(--text-accent); // Glow on active workspace
   }
   
-  // Mobile: Hide the text labels for workspaces if screen is REALLY small
   @media (max-width: 380px) {
     span { display: none; }
     i { font-size: 1.2rem; }
@@ -67,95 +30,67 @@
 // --- Grid/Cards ---
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr; // Default to 1 column on mobile
-  gap: 1rem;
-
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
   @media (min-width: 768px) { grid-template-columns: repeat(2, 1fr); }
   @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
 }
 
 .card {
   border: 1px solid var(--border-dim);
-  padding: 1rem;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s;
+  padding: 1.25rem;
+  border-radius: 0.4rem;
+  background-color: rgba(0,0,0,0.1); // Slightly darker
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   cursor: pointer;
   display: block;
+  position: relative;
 
+  // Retro Tiling WM Feel: Hard Shadow Pop
   &:hover {
     background-color: var(--bg-hover);
-    .card__title { text-decoration: underline; }
+    border-color: var(--text-accent);
+    transform: translate(-4px, -4px);
+    box-shadow: 6px 6px 0px var(--bg-body), 6px 6px 0px 1px var(--text-accent);
+    
+    .card__title { 
+        text-decoration: none; 
+        color: var(--text-accent);
+        text-shadow: var(--glow-accent);
+    }
   }
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
 
   &__title {
     font-weight: bold;
-    color: var(--text-accent);
-    font-size: 1.125rem;
+    color: var(--text-main); // Start neutral, light up on hover
+    font-size: 1.2rem;
+    transition: color 0.2s;
   }
-  &__date { font-size: 0.75rem; color: var(--text-dim); }
+  &__date { font-size: 0.8rem; color: var(--text-dim); font-family: monospace; }
   &__desc {
-    font-size: 0.875rem;
-    color: var(--text-main);
-    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    line-height: 1.5;
   }
   &__tags {
     display: flex;
     gap: 0.5rem;
-    flex-wrap: wrap; // Allow tags to wrap on mobile
-
+    flex-wrap: wrap; 
     .tag {
       font-size: 0.75rem;
-      padding: 0.125rem 0.5rem;
-      background-color: var(--bg-hover);
+      padding: 0.2rem 0.5rem;
+      background-color: var(--bg-body);
+      border: 1px solid var(--border-dim);
       color: var(--color-green);
-      border-radius: 0.125rem;
-    }
-  }
-}
-
-// --- Gallery Grid Styles ---
-.gallery-grid {
-  display: grid;
-  // Adjusted minmax to 250px to fit better on narrower phone screens
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-  height: 100%;
-  overflow-y: auto;
-  padding: 0.5rem;
-
-  .gallery-item {
-    height: 350px;
-    min-width: 0;
-
-    .window__body.gallery-body {
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-
-      a {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-        border: none;
-        margin: 0;
-      }
+      border-radius: 0.2rem;
     }
   }
 }
@@ -163,67 +98,135 @@
 // --- LS List View (Section) ---
 .ls-grid {
   display: grid;
-  // We keep the columns but ensure the container handles scrolling
   grid-template-columns: max-content max-content max-content max-content auto;
-  column-gap: 1.5rem;
-  row-gap: 0.5rem;
-  
-  // Important for Mobile: Horizontal Scroll
+  column-gap: 2rem;
+  row-gap: 0.75rem;
   overflow-x: auto;
   white-space: nowrap;
-  font-family: inherit;
-  font-size: 1.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  padding: 1rem;
   
-  // Mobile tweaks
+  // Alternate row coloring for readability
+  background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.02) 50%);
+  background-size: 100% 3rem; // 1.5rem * 2 rows approx
+
   @media (max-width: 640px) {
-    font-size: 1rem; // Smaller font for list view on mobile
+    font-size: 0.9rem;
     column-gap: 1rem;
-    padding-bottom: 0.5rem; // Space for scrollbar
   }
 }
-
-.ls-total {
-  grid-column: 1 / -1;
-  color: var(--text-dim);
-  margin-bottom: 0.5rem;
-}
-
-.ls-perms { color: var(--text-dim); }
+.ls-total { grid-column: 1 / -1; color: var(--text-dim); margin-bottom: 1rem; border-bottom: 1px solid var(--border-dim); padding-bottom: 0.5rem;}
+.ls-perms { color: var(--text-dim); opacity: 0.7; }
 .ls-user { color: var(--color-yellow); }
 .ls-size { color: var(--color-green); text-align: right; }
 .ls-date { color: var(--text-dim); }
 .ls-name {
   color: var(--text-accent);
   font-weight: bold;
-  text-decoration: none;
-  &:hover { text-decoration: underline; }
+  &:hover { 
+      text-decoration: underline; 
+      color: var(--text-main);
+  }
 }
 
-// --- 404 Error Page ---
-.error-page {
-  color: var(--text-main);
+// --- Gallery Grid Styles ---
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 0.5rem;
 
-  &__crash-box {
-    margin: 2rem 0;
-    padding: 1.5rem;
-    border: 1px dashed var(--color-red);
-    background-color: color-mix(in srgb, var(--color-red), transparent 95%);
-    border-radius: 0.25rem;
-
-    .crash-message {
-      margin: 0;
-      color: var(--color-red);
-      font-weight: bold;
-      font-family: monospace;
+  .gallery-item {
+    height: 300px;
+    .window__body.gallery-body {
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-body); // Dark background for images
       
-      // Wrap long error URLs on mobile
-      word-break: break-all;
-    }
-    .crash-details {
-      margin: 0.5rem 0 0 0;
-      color: var(--text-dim);
-      font-size: 0.9rem;
-      font-family: monospace;
+      img {
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        transition: transform 0.3s;
+      }
+      &:hover img {
+          transform: scale(1.05);
+      }
     }
   }
+}
+
+// --- Music Player (Sidebar/Widget) ---
+.music-player {
+  @include flex-center-y;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: var(--text-dim);
+  transition: all 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+
+  &__icon { 
+      color: var(--color-green); 
+      animation: pulse 2s ease-in-out infinite; 
+  }
+  
+  &__content {
+    width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  &__song-title {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-text 10s linear infinite;
+    font-size: 0.85rem;
+  }
+
+  &:hover { 
+      background-color: var(--bg-hover);
+      color: var(--text-main); 
+  }
+}
+
+// --- Bottom Bar (Mobile) ---
+.bottom-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  background-color: var(--bg-bar);
+  border-top: 1px solid var(--border-dim);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  padding: 0 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  
+  @media (max-width: 640px) { display: flex; }
+  
+  .theme-toggle {
+    font-size: 1.5rem;
+    color: var(--color-yellow);
+    background: none; border: none;
+  }
+  .mobile-clock {
+    font-weight: bold;
+    color: var(--text-accent);
+  }
+}
+
+// --- Theme Toggle (Desktop) ---
+.theme-toggle {
+    background: none; border: none; cursor: pointer;
+    color: var(--color-yellow);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    &:hover { transform: rotate(90deg) scale(1.1); }
 }
