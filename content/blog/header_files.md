@@ -5,7 +5,7 @@ date = 2025-11-30
 tags = ["c", "low-level", "linker"]
 +++
 
-Hey everyone. Today I want to talk a little bit about **H**eader **F**iles in C and the Linker. I feel like this is a topic that doesn't get touched on enough.
+Hey everyone. Today I want to talk a little bit about **Header Files** in C and the linker. I feel like this is a topic that doesn't get touched on enough.
 
 In my case, back when I was at university, they explained everything there was to know about compilers, but they never really talked **about** the linker or the linking process—and I think it's actually quite important. So, today I'm going to explain how it works.
 
@@ -24,10 +24,10 @@ int main() {
 }
 ````
 
-If you put this code into your IDE, and you have a LSP configured, it is probably screaming at you (Spoilers\!). If I try to compile this, I get an error:
+If you put this code into your IDE, and you have a LSP configured, it is probably going to scream at you (Spoilers!). If I try to compile this, I get an error:
 
 ```text
-rafa at archdesktop ➜  math gcc main.c -o main
+$ math gcc main.c -o main
 main.c: In function ‘main’:
 main.c:6:18: error: implicit declaration of function ‘add’ [-Wimplicit-function-declaration]
     6 |     int result = add(a, b);
@@ -35,7 +35,7 @@ main.c:6:18: error: implicit declaration of function ‘add’ [-Wimplicit-funct
 ```
 
 {% note(title="Did you know?", type="info") %}
-In older versions of compilers (or the C standard—I'm not sure which—), this used to be just a warning. The reason is that implicit function declarations were allowed, and assummed a default return type of `int`. You had to manually pass a flag to GCC to treat it as an error.
+In older versions of the compiler (or the C standard—I'm not sure which—), this used to be just a warning. The reason is that implicit function declarations were allowed, and assummed a default return type of `int`. You had to manually pass a flag to GCC to treat it as an error.
 {% end %}
 
 The error happens because when the compiler encounters a function call, it needs to know:
@@ -65,16 +65,16 @@ int main() {
 You don't actually need to write the parameter names in the declaration, just the types. But almost everyone keeps the names for readability. You don't need to write `extern` either, since function declarations on C are considered `extern` by default.
 {% end %}
 
-If I save and compile again, the error changes. Now, it looks different. This is a **Linker Error**.
+If I save and compile again, the error changes. Now, it looks different. This is a **linker Error**.
 
 ```text
-rafa at archdesktop ➜  math gcc main.c -o main
+$ math gcc main.c -o main
 /usr/sbin/ld: /tmp/ccx7N6qV.o: in function `main':
 main.c:(.text+0x21): undefined reference to `add'
 collect2: error: ld returned 1 exit status
 ```
 
-## How Compilation Works (The Deep Dive)
+## How Compilation Works
 
 When we invoke `gcc`, we aren't just calling the compiler. There are several phases required to transform high-level code into machine code:
 
@@ -113,35 +113,40 @@ flowchart LR
 1. **The Preprocessor:** It takes your source code and handles instructions starting with `#` (like `#include`, `#define`). It processes macros and substitutes text.
 2. **The Compiler:** It takes the output of the preprocessor and translates high-level C into Assembly code (instructions like `mov`, `push`, etc.).
 3. **The Assembler:** It takes that Assembly code and translates it into machine code specific to your architecture, spitting out an **Object File** (`.o`).
-4. **The Linker:** Finally, the linker takes these object files—along with external libraries—and produces the final executable (in the case of Linux, an `ELF` file).
+4. **The linker:** Finally, the linker takes these object files—along with external libraries—and produces the final executable (in the case of Linux, an `ELF` file).
 
 ### The Linker's Job
 
-The Linker has two main responsibilities:
+The linker has two main responsibilities:
 
 1. **Ordering:** It decides how to arrange the code from various object files into the final executable by following a *linker script*.
 2. **Symbol Resolution:** This is why our previous error changed.
 
 A **symbol** is essentially a name we give to a region of memory (like variable names `a`, `b`, or function names `add`, `printf`).
 
-In our code, we *declared* `add` (we told the compiler it exists), but we never *defined* it (we never implemented the body of the function). When we use `extern` (or just a declaration), we are making a promise to the compiler: *"Don't worry, the Linker will find the implementation of this function later."*
+In our code, we *declared* `add` (we told the compiler it exists), but we never *defined* it (we never implemented the body of the function). When we use `extern` (or just a declaration), we are making a promise to the compiler: *"Don't worry, the linker will find the implementation of this function later."*
 
-The Linker's job is to find the memory address where that function lives and patch the function call with that address. Since we didn't implement it, the Linker complains.
+The linker's job is to find the memory address where that function lives and patch the function call with that address. Since we didn't implement it, the linker complains.
 
 ## Peeking Inside an Object File
 
 Here is something curious that helps visualize this. We can pass the `-c` flag to GCC. This tells it to compile and assemble, but **skip the linking step**.
 
 ```bash
-gcc -c main.c
+gcc -o main.o -c main.c
 ```
 
-This outputs a `.o` file. If we run the `file` command on it, it says it is a **relocatable** file. You cannot execute this directly because it isn't finished yet.
+This outputs a `.o` file. If we run the `file` command on it, it says it is a **relocatable** file. You cannot execute this directly because it isn't finished yet:
+
+```text
+$ file main.o
+main.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped
+```
 
 If we look at the assembly using `objdump`, we see something interesting in the `main` function:
 
 {% note(title="Quick tip!", type="tip") %}
-You can use the `-M` flag to tell `objdump` to use the Intel syntax, which I believe it's easier on the eyes, like so: `-M intel`
+You can use the `-M` flag to tell `objdump` to use the Intel syntax, which I believe it's easier on the eyes. You just pass it like so: `-M intel`
 {% end %}
 
 ```asm
@@ -160,7 +165,7 @@ You can use the `-M` flag to tell `objdump` to use the Intel syntax, which I bel
   47:    c3                       ret
 ```
 
-**Take a** look at instruction `20` and `3c`. Notice how the opcode for `call` is there, but the address is all **zeros**. It's a placeholder. The compiler left it blank for the Linker to fill in later.
+**Take a** look at instructions `20` and `3c`. Notice how the opcode for `call` is there, but the address is all **zeros**. It's a placeholder. The compiler left it blank for the linker to fill in later.
 
 ## Fixing the Link
 
@@ -238,7 +243,7 @@ Now, in `main.c`, we replace the manual declarations with:
 The `#include` directive effectively tells the preprocessor: *"Go to this file, copy all its contents, and paste them right here."* To the compiler, it looks exactly the same as if you **had** typed it manually.
 
 {% note(title="Note", type="info") %}
-The `ifndef` and `define` instructions are part of what's called a **Header Guard**. It's just there to avoid including a header file more than once into a file.
+The `#ifndef` and `#define` instructions are part of what's called a **Header Guard**. It's just there to avoid including a header file more than once into a file.
 {% end %}
 
 ### The "Type Mismatch" Trap
@@ -274,14 +279,14 @@ You might wonder why we sometimes use quotes and sometimes angle brackets:
 - `#include <stdio.h>`: Used for system libraries. The compiler searches in specific system directories (like `/usr/include`).
 - `#include "math.h"`: Used for your own files. The compiler searches in the current directory first.
 
-## Why Do We Still Use Header Files?
+## Why Are Header Files Useful?
 
-Modern languages like Rust or Go don't need this separation. So why stick with it in C? Here are four reasons:
+You might wonder, why not just use forward declarations and be happy, instead of dealing with header files. Well, there are several advantages to them:
 
-1.  **API Specification:** If you are using a closed-source library, the header file serves as your documentation. It tells you exactly what functions are available and how to call them without you needing to see the code.
-2.  **Private Functions:** You can implement helper functions in your `.c` file but *not* declare them in the `.h` file. This effectively makes them "private" to that file, invisible to the user of your library.
-3.  **Maintainability:** If you change a function signature, you update the header file once, and that change propagates to every file that includes it.
-4.  **Opaque Structs:** You can declare a `struct` in a header but define its contents in the `.c` file. This prevents users from manually messing with the struct's internal fields, making your library safer and more robust. Take a look at this struct, for example:
+1. **API Specification:** If you are using a closed-source library, the header file serves as your documentation. It tells you exactly what functions are available and how to call them without you needing to see the code.
+2. **Private Functions:** You can implement helper functions in your `.c` file but *not* declare them in the `.h` file. This effectively makes them "private" to that file, invisible to the user of your library.
+3. **Maintainability:** If you change a function signature, you update the header file once, and that change propagates to every file that includes it.
+4. **Opaque Structs:** You can declare a `struct` in a header but define its contents in the `.c` file. This prevents users from manually messing with the struct's internal fields, making your library safer and more robust. Take a look at this struct, for example:
 
 ```c
 typedef struct _Text {
@@ -305,16 +310,14 @@ struct _Text {
 };
 ```
 
-## The Historical Reason
+## Why Do We Still Use Header Files?
 
-Finally, why doesn't C just handle this automatically like modern languages?
+Modern languages like Rust or Go don't need this separation. So why does C need them? Long story short: it's for historical reasons:
 
 C was created a long time ago when computers had extremely limited memory. The compiler couldn't hold the information for the entire project in memory at once. It had to treat every `.c` file as an individual, isolated **Translation Unit**.
-
 
 {% note(title="Note", type="info") %}
 A Translation Unit is the result of running the preprocessor on one .c file. That means all included headers become part of that TU.
 {% end %}
 
-The compiler doesn't know about other files; it only knows what's in the current file. That's why we, the programmers, have to provide header files to "bridge the gap" and promise the compiler that the symbols will exist later during linking.
-
+The compiler doesn't know about other files; it only knows what's in the current file. That's why we, the programmers, have to provide header files to "bridge the gap" and "promise" the compiler that the symbols will exist later during linking.
