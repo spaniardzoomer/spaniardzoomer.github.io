@@ -1,6 +1,6 @@
 # The URL the site will be built for
-# base_url = "https://rafaeruscorner.xyz/"
-base_url = "http://127.0.0.1:1111/"
+base_url = "https://rafaeruscorner.xyz/"
+# base_url = "http://127.0.0.1:1111/"
 title = "Rafaeru's corner"
 
 # Whether to automatically compile all Sass files in the sass directory
