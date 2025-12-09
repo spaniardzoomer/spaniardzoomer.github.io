@@ -1,6 +1,7 @@
 +++
 title = "Why do we use header files?"
 date = 2025-11-30
+authors = ["Rafael José Rodríguez"]
 [taxonomies]
 tags = ["c", "low-level", "linker"]
 +++

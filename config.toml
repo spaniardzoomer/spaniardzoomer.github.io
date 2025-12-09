@@ -1,5 +1,6 @@
 # The URL the site will be built for
-base_url = "https://rafaeruscorner.xyz/"
+# base_url = "https://rafaeruscorner.xyz/"
+base_url = "http://127.0.0.1:1111/"
 title = "Rafaeru's corner"
 
 # Whether to automatically compile all Sass files in the sass directory
@@ -7,6 +8,9 @@ compile_sass = true
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
+
+# Enable RSS/Atom generation
+generate_feeds = true
 
 taxonomies = [
     {name = "tags"},
@@ -21,8 +25,9 @@ highlight_code = true
 # Put all your custom variables here
 
 socials = [
-  { name = "linkedin", url = "https://www.linkedin.com/in/rafael-jose-rodriguez/", icon = "linkedin" },
-  { name = "gitlab", url = "https://gitlab.com/rinuxu", icon = "gitlab" },
+  { name = "RSS", url = "/atom.xml", icon = "rss" },
+  { name = "linkedin", url = "https://www.linkedin.com/in/rafael-jose-rodriguez/", icon = "linkedin-logo" },
+  { name = "gitlab", url = "https://gitlab.com/rinuxu", icon = "gitlab-logo" },
 ]
 
 user = "rafa"

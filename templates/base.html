@@ -10,6 +10,8 @@
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
 
+    <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
+
     <!-- Link to the compiled CSS -->
     <link rel="stylesheet" href="{{ get_url(path="main.css") }}">
 
@@ -60,7 +62,7 @@
             <div class="status-bar__socials">
                 {% for social in config.extra.socials %}
                 <a href="{{ social.url }}" target="_blank" title="{{ social.name }}">
-                    <i class="ph ph-{{ social.icon }}-logo"></i>
+                    <i class="ph ph-{{ social.icon }}"></i>
                 </a>
                 {% endfor %}
             </div>
