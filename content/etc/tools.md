@@ -3,7 +3,7 @@ title = "Tools I Use"
 +++
 
 {% note(title="Check them out!", type="tip") %}
-You can find all the configuration files for this programs on my [dotfiles repo](https://gitlab.com/rinuxu/dotfiles).
+You can find all the configuration files for these programs on my [dotfiles repo](https://gitlab.com/rinuxu/dotfiles).
 {% end %}
 
 ## 🖥️ Operating System & Desktop Environment
