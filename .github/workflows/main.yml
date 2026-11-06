@@ -11,8 +11,15 @@ jobs:
         with:
           submodules: 'recursive'
       
+      # Pinned: the templates use Zola 0.23 (Tera 2) syntax, which older
+      # versions can't parse. Bump this when you upgrade Zola locally.
       - name: Install zola
-        run: sudo snap install --edge zola
+        env:
+          ZOLA_VERSION: 0.23.6
+        run: |
+          curl -sSL "https://github.com/getzola/zola/releases/download/v${ZOLA_VERSION}/zola-v${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | sudo tar -xz -C /usr/local/bin
+          zola --version
 
       - name: Build site
         run: zola build
