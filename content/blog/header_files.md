@@ -35,9 +35,9 @@ main.c:6:18: error: implicit declaration of function ‘add’ [-Wimplicit-funct
       |                  ^~~
 ```
 
-{% note(title="Did you know?", type="info") %}
+{% <note title="Did you know?" type="info"> %}
 In older versions of the compiler (or the C standard—I'm not sure which—), this used to be just a warning. The reason is that implicit function declarations were allowed, and assummed a default return type of `int`. You had to manually pass a flag to GCC to treat it as an error.
-{% end %}
+{% </note> %}
 
 The error happens because when the compiler encounters a function call, it needs to know:
 
@@ -62,9 +62,9 @@ int main() {
 ```
 
 
-{% note(title="Quick tip!", type="tip") %}
+{% <note title="Quick tip!" type="tip"> %}
 You don't actually need to write the parameter names in the declaration, just the types. But almost everyone keeps the names for readability. You don't need to write `extern` either, since function declarations on C are considered `extern` by default.
-{% end %}
+{% </note> %}
 
 If I save and compile again, the error changes. Now, it looks different. This is a **linker Error**.
 
@@ -79,7 +79,7 @@ collect2: error: ld returned 1 exit status
 
 When we invoke `gcc`, we aren't just calling the compiler. There are several phases required to transform high-level code into machine code:
 
- {% mermaid() %}
+ {% <mermaid> %}
 flowchart LR
 
     %% Main Flow
@@ -109,7 +109,7 @@ flowchart LR
     style End fill:#000,stroke:#fff,color:#fff
     style Obj1 fill:#000,stroke:#fff,color:#fff
     style Obj2 fill:#000,stroke:#fff,color:#fff
-{% end %} 
+{% </mermaid> %} 
 
 1. **The Preprocessor:** It takes your source code and handles instructions starting with `#` (like `#include`, `#define`). It processes macros and substitutes text.
 2. **The Compiler:** It takes the output of the preprocessor and translates high-level C into Assembly code (instructions like `mov`, `push`, etc.).
@@ -146,9 +146,9 @@ main.o: ELF 64-bit LSB relocatable, x86-64, version 1 (SYSV), not stripped
 
 If we look at the assembly using `objdump`, we see something interesting in the `main` function:
 
-{% note(title="Quick tip!", type="tip") %}
+{% <note title="Quick tip!" type="tip"> %}
 You can use the `-M` flag to tell `objdump` to use the Intel syntax, which I believe it's easier on the eyes. You just pass it like so: `-M intel`
-{% end %}
+{% </note> %}
 
 ```asm
 0000000000000000 <main>:
@@ -214,9 +214,9 @@ The linker now finds the symbol `add` in `math.c`, resolves the address, and lin
     1194:    c3                       ret
 ```
 
-{% note(title="Note", type="info") %}
+{% <note title="Note" type="info"> %}
 This example uses static linking (notice how the code for `add` was copied into the executable). Functions like `printf` usually use dynamic linking (loading code at runtime), but that's a complex topic for another post.
-{% end %}
+{% </note> %}
 
 ## Enter: Header Files
 
@@ -243,9 +243,9 @@ Now, in `main.c`, we replace the manual declarations with:
 
 The `#include` directive effectively tells the preprocessor: *"Go to this file, copy all its contents, and paste them right here."* To the compiler, it looks exactly the same as if you **had** typed it manually.
 
-{% note(title="Note", type="info") %}
+{% <note title="Note" type="info"> %}
 The `#ifndef` and `#define` instructions are part of what's called a **Header Guard**. It's just there to avoid including a header file more than once into a file.
-{% end %}
+{% </note> %}
 
 ### The "Type Mismatch" Trap
 
@@ -317,8 +317,8 @@ Modern languages like Rust or Go don't need this separation. So why does C need 
 
 C was created a long time ago when computers had extremely limited memory. The compiler couldn't hold the information for the entire project in memory at once. It had to treat every `.c` file as an individual, isolated **Translation Unit**.
 
-{% note(title="Note", type="info") %}
+{% <note title="Note" type="info"> %}
 A Translation Unit is the result of running the preprocessor on one .c file. That means all included headers become part of that TU.
-{% end %}
+{% </note> %}
 
 The compiler doesn't know about other files; it only knows what's in the current file. That's why we, the programmers, have to provide header files to "bridge the gap" and "promise" the compiler that the symbols will exist later during linking.

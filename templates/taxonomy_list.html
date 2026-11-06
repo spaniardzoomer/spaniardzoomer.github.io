@@ -1,26 +1,17 @@
 {% extends "base.html" %}
 
-{% block window_path %}~/{{ taxonomy.name }}/{% endblock %}
-{% block prompt_path %}~/{{ taxonomy.name }}/{% endblock %}
-{% block prompt_cmd %}ls -F{% endblock %}
+{% block title %}{{ taxonomy.name }} · {{ config.title }}{% endblock title %}
+{% block window_title %}C:\{{ taxonomy.name | upper }}&gt; DIR /W{% endblock window_title %}
+{% block window_tag %}タグ{% endblock window_tag %}
 
 {% block content %}
-<div class="content-area">
-    <h1 class="post-title"># {{ taxonomy.name }}</h1>
-    
-    <div class="grid-container">
-        {% for term in terms %}
-        <a href="{{ term.permalink }}" class="card">
-            <div class="card__header" style="margin-bottom: 0;">
-                <span class="card__title">
-                    <i class="ph ph-folder"></i> {{ term.name }}
-                </span>
-                <span class="card__date" style="font-size: 0.9em;">
-                    {{ term.pages | length }} items
-                </span>
-            </div>
-        </a>
-        {% endfor %}
-    </div>
-</div>
+<h1 class="post-title">Tags</h1>
+<ul class="tag-dirs">
+    {% for term in terms %}
+    <li>
+        <a href="{{ term.permalink }}" class="tag-dirs__name">[{{ term.name | upper }}]</a>
+        <span class="tag-dirs__count">{{ term.pages | length }}</span>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock content %}

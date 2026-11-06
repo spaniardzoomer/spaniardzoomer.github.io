@@ -1,216 +1,214 @@
-// --- Status Bar ---
-.status-bar {
-  height: 2.25rem; // Slightly taller for better touch
-  background-color: var(--bg-bar);
-  // Glassmorphism
-  backdrop-filter: blur(8px); 
-  border-bottom: 1px solid var(--border-dim);
-  @include flex-center-y;
-  justify-content: space-between;
-  padding: 0 1rem;
-  font-size: 0.85rem;
-  flex-shrink: 0;
-  user-select: none;
-  z-index: 50;
-  
+// --- Menu bar (PC-98 function keys) ---
+.menu-bar {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: var(--bar);
+  color: var(--bar-fg);
+}
+
+.menu-bar__key {
+  padding: 4px 14px;
+  color: var(--bar-fg);
+  white-space: nowrap;
+
+  &:hover { background-color: var(--win-title); color: var(--win-title-fg); }
+
+  &--active,
+  &--active:hover {
+    background-color: var(--active);
+    color: var(--active-fg);
+  }
+}
+
+// Right side of the bar: social links + light/dark switch
+.menu-bar__right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: auto;
+}
+
+.menu-bar__link {
+  color: var(--footer-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  &:hover { text-decoration: none; }
+}
+
+// --- Light/dark switch: [sun] [▮▯] [moon], knob slides to the active side ---
+.theme-switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border: none;
+  background: none;
+  color: var(--bar-fg);
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+
+  &__icon {
+    font-size: 18px;
+    opacity: 0.45;
+    transition: opacity 0.15s;
+  }
+
+  &__track {
+    position: relative;
+    width: 38px;
+    height: 18px;
+    border: 2px solid currentColor;
+  }
+
+  &__knob {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 16px;
+    height: 12px;
+    background: var(--active);
+    transform: translateX(18px); // dark (default): knob on the moon side
+    transition: transform 0.15s steps(3);
+  }
+
+  &:hover &__track,
+  &:focus-visible &__track { border-color: var(--active); }
+}
+
+// Dark (default): moon lit
+.theme-switch__icon--moon { opacity: 1; color: var(--active); }
+
+// Light: knob on the sun side, sun lit
+:root[data-theme="light"] {
+  .theme-switch__knob { transform: none; }
+  .theme-switch__icon--sun { opacity: 1; color: var(--footer-link); }
+  .theme-switch__icon--moon { opacity: 0.45; color: inherit; }
+}
+
+// --- Desktop: the area that holds the windows ---
+.desktop {
+  flex: 1;
+  width: 100%;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
   @media (max-width: 640px) {
-    padding: 0 0.5rem;
-    justify-content: center; 
+    padding: 20px 12px 32px;
   }
+}
 
-  &__workspaces {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto; 
-    scrollbar-width: none;
-    &::-webkit-scrollbar { display: none; }
-    
-    @media (max-width: 640px) {
-      margin-right: auto;
-    }
-  }
-
-  &__center {
-    display: none;
-    @include flex-center-y;
-    gap: 1rem;
-    @media (min-width: 768px) { display: flex; }
-  }
+// --- Window ---
+.window {
+  min-width: 0;
+  background-color: var(--win);
+  border: 4px double var(--win-border);
+  box-shadow: 8px 8px 0 var(--shadow);
 
   &__title {
-    color: var(--text-accent-2);
-    font-weight: bold;
-    display: none;
-    text-shadow: var(--glow-accent); // Subtle Glow
-    @media (min-width: 768px) { display: block; }
-  }
-
-  &__socials {
     display: flex;
-    gap: 0.75rem;
-    a {
-      color: var(--text-dim);
-      font-size: 1rem;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      @include flex-center-y;
-      &:hover {
-        color: var(--text-accent);
-        transform: scale(1.2); // Pop effect
-      }
-    }
-  }
-
-  &__stats {
-    display: flex;
-    gap: 1.25rem;
-    @media (max-width: 640px) { display: none; }
-
-    .stat {
-      @include flex-center-y;
-      gap: 0.4rem;
-      font-size: 0.8rem;
-      &--browser { color: var(--color-green); }
-      &--os { color: var(--color-yellow); }
-      &--time { color: var(--text-accent); font-weight: bold; }
-    }
-  }
-}
-
-// --- Main Layout ---
-.main-layout {
-  flex: 1;
-  padding: 1.5rem; // More breathing room
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  @media (max-width: 640px) {
-    padding: 0.5rem;
-    padding-bottom: 4rem; 
-  }
-}
-
-// --- Window Frame (The Centerpiece) ---
-.window {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  
-  // Glass Effect
-  background-color: var(--bg-window);
-  backdrop-filter: blur(12px) saturate(120%); // Strong blur + saturation
-  
-  border: 1px solid var(--border-dim);
-  border-radius: 0.6rem;
-  
-  // Deep shadow for depth
-  box-shadow: 
-    0 20px 50px -10px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255,255,255, 0.05) inset; // Inner light rim
-    
-  overflow: hidden;
-  transition: border-color 0.3s;
-
-  // Active Window Border Glow (Simulated)
-  &:hover {
-    border-color: color-mix(in srgb, var(--text-accent), transparent 70%);
-  }
-
-  &__header {
-    @include flex-center-y;
     justify-content: space-between;
-    padding: 0.6rem 1rem;
-    background-color: var(--bg-header);
-    border-bottom: 1px solid var(--border-dim);
-    flex-shrink: 0;
-
-    .title {
-      font-size: 0.8rem;
-      font-weight: bold;
-      color: var(--text-accent);
-      letter-spacing: 0.05em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 60vw;
-      text-shadow: var(--glow-accent);
-    }
-
-    .controls {
-      display: flex;
-      gap: 0.6rem;
-
-      .dot {
-        width: 0.8rem;
-        height: 0.8rem;
-        border-radius: 50%;
-        position: relative;
-        // Mac-style buttons but flat colors
-        &--yellow { background-color: var(--color-yellow); }
-        &--green { background-color: var(--color-green); }
-        &--red { background-color: var(--color-red); }
-        
-        // Add icons on hover (pure CSS trick)
-        &:hover { filter: brightness(1.2); }
-      }
-    }
+    gap: 16px;
+    padding: 2px 12px;
+    background-color: var(--win-title);
+    color: var(--win-title-fg);
+    overflow-wrap: anywhere;
   }
 
   &__body {
-    flex: 1;
-    // Slight texture overlay inside the window content
-    background-image: linear-gradient(var(--bg-header) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bg-header) 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-color: transparent; // Rely on window bg
-    
-    padding: 2rem;
-    overflow-y: auto;
-    min-height: 0;
+    padding: 20px 24px;
 
     @media (max-width: 640px) {
-      padding: 1rem;
-      background-size: 20px 20px;
+      padding: 16px;
     }
   }
 }
 
-// --- Terminal Prompt (Bottom) ---
-.prompt-line {
-  @include flex-center-y;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-  padding-left: 0.5rem;
+// Home: picture next to the about text
+.window-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: flex-start;
 
-  @media (max-width: 640px) {
-    flex-wrap: wrap;
-    gap: 0.25rem;
-  }
-
-  .arrow { color: var(--color-green); font-weight: bold;}
-  .path { color: var(--text-accent-2); font-weight: bold; }
-  
-  // The command input
-  .cmd {
-    color: var(--text-main);
-    margin-left: 0.2rem;
-    animation: none; // Reset old animation
-    display: inline-block;
-    position: relative;
-    
-    // THE CURSOR: A blinking block
-    &::after {
-        content: '';
-        display: inline-block;
-        width: 10px;
-        height: 1.2em;
-        background-color: var(--text-main);
-        vertical-align: text-bottom;
-        margin-left: 5px;
-        animation: blink 1s step-end infinite;
-    }
+  // Picture + about: stay on one row until the picture is hidden
+  &--hero {
+    @media (max-width: 1100px) { flex-wrap: nowrap; }
   }
 }
 
+.window--pic {
+  flex: 1 1 460px;
+
+  // Medium screens: stay beside the text, just smaller
+  @media (max-width: 1100px) { flex: 0 1 38%; }
+  // Phones: no room for it
+  @media (max-width: 720px) { display: none; }
+
+  .window__body--pic {
+    padding: 6px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  // Artist credit under the picture
+  .window__credit {
+    margin: 4px 6px 0;
+    text-align: right;
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+}
+
+.window--grow {
+  flex: 999 1 520px;
+}
+
+// Home: the extra windows cut from the markdown, side by side, same height
+.window-row--tiles {
+  align-items: stretch;
+
+  > .window { flex: 1 1 300px; }
+
+  // The tiles have no headings, so drop the list's top margin
+  .window__body > ul:first-child { margin-top: 0; }
+}
+
+// --- Masthead (home) ---
+.masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  &__stripe {
+    width: 100%;
+    height: 10px;
+    &--pink { background: repeating-linear-gradient(90deg, var(--pink) 0 4px, transparent 4px 8px); }
+    &--blue { background: repeating-linear-gradient(90deg, var(--blue) 0 4px, transparent 4px 8px); }
+  }
+
+  &__title {
+    margin: 8px 0 0;
+    font-size: 48px;
+    font-weight: normal;
+    line-height: 1.1;
+    letter-spacing: 0.08em;
+    color: var(--pink);
+
+    @media (max-width: 640px) { font-size: 32px; }
+  }
+
+  &__sub {
+    color: var(--blue);
+    letter-spacing: 0.3em;
+  }
+}

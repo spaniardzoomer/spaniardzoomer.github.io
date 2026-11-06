@@ -7,15 +7,22 @@
     <title>{% block title %}{{ config.title }}{% endblock title %}</title>
 
     <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
+
+    <!-- Pixel font (Latin + Japanese) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap">
 
     <!-- Link to the compiled CSS -->
     <link rel="stylesheet" href="{{ get_url(path="main.css") }}">
 
-    <!-- Icons (Phosphor Icons) -->
+    <!-- Icons (Phosphor Icons), used by notes and some content -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- Inline script to prevent flash of wrong theme -->
@@ -26,131 +33,51 @@
         }
     </script>
 
-    <script src="/js/clock.js" defer></script>
     <script src="/js/theme.js" defer></script>
     <script type="module" src="/js/mermaid.js" defer></script>
-    <script src="/js/music-player.js" defer></script>
-    <script src="/js/client-stats.js" defer></script>
-    <script src="/js/mobile-clock.js" defer></script>
- 
 </head>
 
 <body>
 
     {# Handle 404 pages where current_path is missing #} {% set current_path = current_path | default(value="") %}
 
-    <!-- STATUS BAR -->
-    <nav class="status-bar">
-        <!-- Workspaces / Navigation -->
-        <div class="status-bar__workspaces">
-            {% for item in config.extra.menu %}
-            <a href="{{ item.url }}" class="nav-link {% if item.url == '/' %}{% if current_path == '/' %}nav-link--active{% endif %}{% else %}{% if current_path is starting_with(item.url) %}nav-link--active{% endif %}{% endif %}">
-                <i class="ph {{ item.logo }}"></i>
-                <span>{{ item.name }}</span>
-            </a>
+    <!-- MENU BAR (PC-98 style function keys) -->
+    <nav class="menu-bar" aria-label="Site">
+        {% for item in config.extra.menu %}
+        {% if item.url == '/' %}{% set active = current_path == '/' %}{% else %}{% set active = current_path is starting_with(pat=item.url) %}{% endif %}
+        <a href="{{ item.url }}" class="menu-bar__key {% if active %}menu-bar__key--active{% endif %}" {% if active %}aria-current="page"{% endif %}>
+            F{{ loop.index }} {{ item.jp }} {{ item.name }}
+        </a>
+        {% endfor %}
+
+        <div class="menu-bar__right">
+            {% for social in config.extra.socials %}
+            <a href="{{ social.url }}" class="menu-bar__key menu-bar__link" {% if social.url is starting_with(pat="http") %}target="_blank" rel="noopener"{% endif %}>{{ social.name }}</a>
             {% endfor %}
-        </div>
 
-        <!-- Center Title -->
-        <div class="status-bar__center">
-
-            <!-- SOCIALS INJECTED HERE -->
-            {% if config.extra.socials %}
-            <div class="status-bar__socials">
-                {% for social in config.extra.socials %}
-                <a href="{{ social.url }}" target="_blank" title="{{ social.name }}">
-                    <i class="ph ph-{{ social.icon }}"></i>
-                </a>
-                {% endfor %}
-            </div>
-            {% endif %}
-        </div>
-
-        <!-- System Stats -->
-        <div class="status-bar__stats">
-
-            <!-- THEME TOGGLE BUTTON -->
-            <button id="theme-toggle" class="theme-toggle" title="Toggle Light/Dark Theme">
-                <i class="ph ph-sun-dim"></i>
+            {#- Light/dark switch: sun on the left, moon on the right, the knob sits on the active one -#}
+            <button type="button" class="theme-switch" role="switch" aria-checked="true" aria-label="Dark mode" title="Toggle dark mode">
+                <i class="ph-bold ph-sun theme-switch__icon theme-switch__icon--sun" aria-hidden="true"></i>
+                <span class="theme-switch__track" aria-hidden="true"><span class="theme-switch__knob"></span></span>
+                <i class="ph-bold ph-moon theme-switch__icon theme-switch__icon--moon" aria-hidden="true"></i>
             </button>
-
-            <!-- The Music Player -->
-            <div class="music-player" id="music-player">
-                <div class="music-player__icon" id="music-icon">
-                    <i class="ph ph-play"></i>
-                </div>
-                <div class="music-player__content">
-                    <div class="music-player__scroll">
-                        <span class="music-player__song-title">Lofi Girl - beats to relax/study to</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Browser -->
-            <div class="stat stat--browser" title="Your Browser">
-                <i class="ph ph-globe"></i>
-                <span id="stat-browser">Web</span>
-            </div>
-
-            <!-- Platform -->
-            <div class="stat stat--os" title="Your OS Platform">
-                <i class="ph ph-terminal-window"></i>
-                <span id="stat-os">Unknown</span>
-            </div>
-            <div class="stat stat--time"><i class="ph ph-clock"></i> <span id="clock">12:00</span></div>
         </div>
     </nav>
 
-    <!-- MAIN WINDOW LAYOUT -->
-    <main class="main-layout">
-        <!-- This allows us to replace the single window with a grid in gallery.html -->
+    <main class="desktop">
         {% block root_window %}
-        <div class="window">
-
-            <!-- Window Header -->
-            <div class="window__header">
-                <span class="title">
-                    term {% block window_path %}~/{% endblock %}
-                </span>
-                <div class="controls">
-                    <div class="dot dot--yellow"></div>
-                    <div class="dot dot--green"></div>
-                    <div class="dot dot--red"></div>
-                </div>
+        <section class="window">
+            <div class="window__title">
+                <span>{% block window_title %}C:\&gt;{% endblock window_title %}</span>
+                <span>{% block window_tag %}{% endblock window_tag %}</span>
             </div>
-
-            <!-- Window Content -->
-            <div class="window__body">
-
-                <!-- Terminal Prompt -->
-                <div class="prompt-line">
-                    <span class="path">root@rafaerus_corner</span>
-                    <span class="arrow">➜</span>
-                    <span class="path">{% block prompt_path %}~/{% endblock %}</span>
-                    <span class="cmd">{% block prompt_cmd %}ls -la{% endblock %}</span>
-                </div>
-
-                <!-- Content Injection -->
-                <div class="content-area">
-                    {% block content %}{% endblock content %}
-                </div>
+            <div class="window__body content-area">
+                {% block content %}{% endblock content %}
             </div>
-        </div>
+        </section>
         {% endblock root_window %}
     </main>
 
-    <!-- BOTTOM BAR (Mobile Only) -->
-    <nav class="bottom-bar">
-        <!-- Mobile Theme Toggle -->
-        <button class="theme-toggle" id="theme-toggle-mobile">
-            <i class="ph ph-sun-dim"></i>
-        </button>
-        
-        <!-- Mobile Clock -->
-        <div class="mobile-clock">
-            <i class="ph ph-clock"></i> <span id="clock-mobile">00:00</span>
-        </div>
-    </nav>
 </body>
 
 </html>

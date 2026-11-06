@@ -1,85 +1,60 @@
-/// Rosé Pine Palette
-/// A natural pine, faux-pas minimal, soothing and comfortable color palette.
-/// @link https://rosepinetheme.com/
-
-// --- Rosé Pine Palette ---
-$rp-base: #191724;
-$rp-surface: #1f1d2e;
-$rp-overlay: #26233a;
-$rp-muted: #6e6a86;
-$rp-subtle: #908caa;
-$rp-text: #e0def4;
-$rp-love: #eb6f92; // Red
-$rp-gold: #f6c177; // Yellow
-$rp-rose: #ebbcba; // Pink/Accent
-$rp-pine: #31748f; // Blue/Green
-$rp-foam: #9ccfd8; // Cyan
-$rp-iris: #c4a7e7; // Purple
-
-// --- Rosé Pine Dawn ---
-$rp-dawn-base: #faf4ed;
-$rp-dawn-surface: #fffaf3;
-$rp-dawn-overlay: #f2e9e1;
-$rp-dawn-muted: #9893a5;
-$rp-dawn-subtle: #797593;
-$rp-dawn-text: #575279;
-$rp-dawn-love: #b4637a;
-$rp-dawn-gold: #ea9d34;
-$rp-dawn-rose: #d7827e;
-$rp-dawn-pine: #286983;
-$rp-dawn-foam: #56949f;
-$rp-dawn-iris: #907aa9;
+/// PC-98 inspired palettes: "dusk" (dark) and "cream" (light)
 
 :root {
-  // Default: Dark Mode (Rosé Pine Main)
-  --bg-body: #{$rp-base};
-  --bg-window: #{rgba($rp-surface, 0.85)}; // More transparent for blur
-  --bg-header: #{rgba($rp-base, 0.6)};
-  --bg-bar: #{rgba($rp-surface, 0.9)};
-  --bg-hover: #{$rp-overlay};
-  --bg-prompt: transparent;
+  // Default: Dark Mode (Dusk: cozy navy-plum with pastel pink and blue)
+  --bg: #23263a;
+  --fg: #e8e4f0;
+  --fg-dim: #a9a5bd;
 
-  --text-main: #{$rp-text};
-  --text-dim: #{$rp-subtle};
-  --text-accent: #{$rp-rose}; 
-  --text-accent-2: #{$rp-iris}; 
+  --bar: #2d3147;        // menu and footer bars
+  --bar-fg: #e8e4f0;
+  --active: #f4a6b8;     // current menu key
+  --active-fg: #23263a;
 
-  --text-code: #{$rp-gold}; 
-  --bg-code: #{rgba($rp-overlay, 0.5)};
+  --win: #2d3147;        // window background
+  --win-border: #c9c4dc;
+  --win-title: #c9c4dc;  // window title bar
+  --win-title-fg: #23263a;
+  --shadow: #f4a6b8;     // offset window shadow
 
-  --border-dim: #{$rp-overlay};
-  --border-active: #{$rp-rose};
+  --pink: #f4a6b8;       // headings, accents
+  --blue: #9cb8f0;       // links, paths
+  --footer-link: #f4a6b8;
 
-  --color-green: #{$rp-pine};
-  --color-yellow: #{$rp-gold};
-  --color-red: #{$rp-love};
+  --border: #474c66;     // tables, rules, thumbnails
+  --bg-alt: #23263a;     // inline code, notes
+
+  // Code blocks stay dark in both themes: the highlighting theme (nord) uses light text
+  --bg-pre: #1c1f2f;
 
   --mermaid-filter: invert(1) hue-rotate(180deg);
-  
-  // New Variable for Glow
-  --glow-accent: 0 0 15px #{rgba($rp-rose, 0.3)};
 }
 
 :root[data-theme="light"] {
-  // Light Mode (Rosé Pine Dawn)
-  --bg-body: #{$rp-dawn-base};
-  --bg-window: #{rgba($rp-dawn-surface, 0.9)};
-  --bg-header: #{rgba($rp-dawn-base, 0.8)};
-  --bg-bar: #{rgba($rp-dawn-surface, 0.95)};
-  --bg-hover: #{$rp-dawn-overlay};
-  --bg-prompt: transparent;
+  // Light Mode (Cream: warm paper with rose and soft blue)
+  --bg: #f4efe6;
+  --fg: #3a3550;
+  --fg-dim: #67627a;
 
-  --text-code: #{$rp-dawn-love}; 
-  --bg-code: #{$rp-dawn-surface};
+  --bar: #3a3550;
+  --bar-fg: #f4efe6;
+  --active: #b24a5d;
+  --active-fg: #ffffff;
 
-  --text-main: #{$rp-dawn-text}; 
-  --text-dim: #{$rp-dawn-subtle};
-  --text-accent: #{$rp-dawn-iris}; 
-  --text-accent-2: #{$rp-dawn-pine};
+  --win: #fffaf2;
+  --win-border: #3a3550;
+  --win-title: #3a3550;
+  --win-title-fg: #fffaf2;
+  --shadow: #e8c9a8;
 
-  --border-dim: #{$rp-dawn-overlay};
-  --border-active: #{$rp-dawn-rose};
+  --pink: #b24a5d;
+  --blue: #3d5fa8;
+  --footer-link: #f4c2cc;
+
+  --border: #ddd2c2;
+  --bg-alt: #f4efe6;
+
+  --bg-pre: #2d3147;
 
   --mermaid-filter: none;
-  --glow-accent: none;
 }

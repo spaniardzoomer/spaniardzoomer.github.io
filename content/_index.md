@@ -1,11 +1,28 @@
 +++
 title = "Home"
 template = "index.html"
+
+# One entry per window, in the same order as the parts below.
+# The parts are separated by a line with just <!-- window --> on it.
+# The first window sits next to the picture; the rest go in the row below.
+[[extra.windows]]
+title = "ABOUT.TXT"
+jp = "自己紹介"
+
+[[extra.windows]]
+title = "SYSTEM.INI"
+jp = "スキル"
+
+[[extra.windows]]
+title = "MENU.EXE"
+jp = "メニュー"
+
+[[extra.windows]]
+title = "LIKES.TXT"
+jp = "好きなもの"
 +++
 
 # Hi, I'm Rafael 👋
-
-## About Me
 
 I'm a recent Computer Science graduate. I studied in Spain, where I graduated second in my class. I also spent 8 months studying abroad in Finland, where I presented [my final thesis](https://www.theseus.fi/handle/10024/858181).
 
@@ -17,21 +34,22 @@ Currently, I'm focused on working on my own little projects using languages like
 
 I've also been daily-driving Linux and other open-source software for some years now. I haven't looked back even once!
 
-## Skills
+<!-- window -->
 
   - **Programming Languages:** C, Rust 🦀, Python 🐍, Java 🍵, Zig.
   - **Human Languages:** 🇪🇸 (native), 🇬🇧 (C1).
   - **Tools:** Linux, Docker, Git, Make, GDB, FastAPI, Flutter, etc.
   - **Interests:** Open Source, low-level systems programming, Linux, Ricing.
 
-## Cool Stuff
+<!-- window -->
 
   - [Tools I use](@/etc/tools.md)
+  - [My gear](@/etc/gear.md)
   - [Favourite Games](@/etc/games.md)
   - [Drawings](@/drawings/_index.md)
   - [Countries I've been to](@/etc/countries.md)
 
-## Things I Love
+<!-- window -->
 
   - My family and friends 👨‍👩‍👦.
   - Coding 🖥️.

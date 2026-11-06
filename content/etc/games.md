@@ -2,9 +2,9 @@
 title = "Favourite Games"
 +++
 
-{% note(title="Heads up!", type="warning") %}
+{% <note title="Heads up!" type="warning"> %}
 These are all my personal opinion of course. These games are here because they had a big impact on my childhood/teen years.
-{% end %}
+{% </note> %}
 ## [Call of Duty: Black Ops 2](https://es.wikipedia.org/wiki/Call_of_Duty:_Black_Ops_II)
 
 <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Call_of_Duty_Black_Ops_II_box_artwork.png/250px-Call_of_Duty_Black_Ops_II_box_artwork.png" width=300>

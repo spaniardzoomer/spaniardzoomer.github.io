@@ -1,232 +1,96 @@
-// --- Navigation Links ---
-.nav-link {
-  @include flex-center-y;
-  gap: 0.5rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 0.25rem;
-  color: var(--text-dim);
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+// --- DIR listing (sections, tags, home) ---
+.dir-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
-  &:hover {
-    background-color: var(--bg-hover);
-    color: var(--text-main);
-    border-color: var(--border-dim);
-  }
-
-  &--active {
-    background-color: var(--bg-hover);
-    color: var(--text-accent);
-    border: 1px solid var(--border-active);
-    box-shadow: 0 0 10px -5px var(--text-accent); // Glow on active workspace
-  }
-  
-  @media (max-width: 380px) {
-    span { display: none; }
-    i { font-size: 1.2rem; }
-  }
-}
-
-// --- Grid/Cards ---
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  @media (min-width: 768px) { grid-template-columns: repeat(2, 1fr); }
-  @media (min-width: 1024px) { grid-template-columns: repeat(3, 1fr); }
-}
-
-.card {
-  border: 1px solid var(--border-dim);
-  padding: 1.25rem;
-  border-radius: 0.4rem;
-  background-color: rgba(0,0,0,0.1); // Slightly darker
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  cursor: pointer;
-  display: block;
-  position: relative;
-
-  // Retro Tiling WM Feel: Hard Shadow Pop
-  &:hover {
-    background-color: var(--bg-hover);
-    border-color: var(--text-accent);
-    transform: translate(-4px, -4px);
-    box-shadow: 6px 6px 0px var(--bg-body), 6px 6px 0px 1px var(--text-accent);
-    
-    .card__title { 
-        text-decoration: none; 
-        color: var(--text-accent);
-        text-shadow: var(--glow-accent);
-    }
-  }
-
-  &__header {
+  &__item {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 20px;
   }
 
-  &__title {
-    font-weight: bold;
-    color: var(--text-main); // Start neutral, light up on hover
-    font-size: 1.2rem;
-    transition: color 0.2s;
+  &__date { color: var(--fg-dim); white-space: nowrap; }
+
+  &__name {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    &:hover { text-decoration: none; }
   }
-  &__date { font-size: 0.8rem; color: var(--text-dim); font-family: monospace; }
-  &__desc {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    margin-bottom: 1rem;
-    line-height: 1.5;
-  }
+
+  &__size,
+  &__target { color: var(--fg-dim); }
+
   &__tags {
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap; 
-    .tag {
-      font-size: 0.75rem;
-      padding: 0.2rem 0.5rem;
-      background-color: var(--bg-body);
-      border: 1px solid var(--border-dim);
-      color: var(--color-green);
-      border-radius: 0.2rem;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: var(--fg-dim);
+  }
+
+  &__desc {
+    flex-basis: 100%;
+    margin: 0 0 6px;
+    padding-left: 1.5em;
+    color: var(--fg-dim);
+    &::before { content: "▸ "; color: var(--pink); }
+  }
+
+  &__total {
+    margin: 16px 0 0;
+    color: var(--fg-dim);
+  }
+}
+
+.tag--match { color: var(--pink); }
+
+// --- Tag directories ---
+.tag-dirs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+
+  &__name {
+    color: var(--blue);
+    &:hover { text-decoration: underline; }
+  }
+
+  &__count { color: var(--fg-dim); }
+}
+
+// --- Gallery ---
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+
+  &__item {
+    display: block;
+    &:hover .gallery__name { color: var(--pink); }
+
+    img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border: 4px double var(--win-border);
     }
   }
-}
 
-// --- LS List View (Section) ---
-.ls-grid {
-  display: grid;
-  grid-template-columns: max-content max-content max-content max-content auto;
-  column-gap: 2rem;
-  row-gap: 0.75rem;
-  overflow-x: auto;
-  white-space: nowrap;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 1.1rem;
-  padding: 1rem;
-  
-  // Alternate row coloring for readability
-  background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.02) 50%);
-  background-size: 100% 3rem; // 1.5rem * 2 rows approx
-
-  @media (max-width: 640px) {
-    font-size: 0.9rem;
-    column-gap: 1rem;
-  }
-}
-.ls-total { grid-column: 1 / -1; color: var(--text-dim); margin-bottom: 1rem; border-bottom: 1px solid var(--border-dim); padding-bottom: 0.5rem;}
-.ls-perms { color: var(--text-dim); opacity: 0.7; }
-.ls-user { color: var(--color-yellow); }
-.ls-size { color: var(--color-green); text-align: right; }
-.ls-date { color: var(--text-dim); }
-.ls-name {
-  color: var(--text-accent);
-  font-weight: bold;
-  &:hover { 
-      text-decoration: underline; 
-      color: var(--text-main);
-  }
-}
-
-// --- Gallery Grid Styles ---
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  padding: 0.5rem;
-
-  .gallery-item {
-    height: 300px;
-    .window__body.gallery-body {
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-body); // Dark background for images
-      
-      img {
-        margin: 0;
-        border: none;
-        box-shadow: none;
-        transition: transform 0.3s;
-      }
-      &:hover img {
-          transform: scale(1.05);
-      }
-    }
-  }
-}
-
-// --- Music Player (Sidebar/Widget) ---
-.music-player {
-  @include flex-center-y;
-  gap: 0.75rem;
-  cursor: pointer;
-  color: var(--text-dim);
-  transition: all 0.2s ease;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-
-  &__icon { 
-      color: var(--color-green); 
-      animation: pulse 2s ease-in-out infinite; 
-  }
-  
-  &__content {
-    width: 120px;
+  &__name {
+    display: block;
+    margin-top: 4px;
+    color: var(--fg-dim);
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
-  &__song-title {
-    display: inline-block;
-    padding-left: 100%;
-    animation: scroll-text 10s linear infinite;
-    font-size: 0.85rem;
-  }
-
-  &:hover { 
-      background-color: var(--bg-hover);
-      color: var(--text-main); 
-  }
-}
-
-// --- Bottom Bar (Mobile) ---
-.bottom-bar {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4rem;
-  background-color: var(--bg-bar);
-  border-top: 1px solid var(--border-dim);
-  backdrop-filter: blur(10px);
-  z-index: 100;
-  padding: 0 1.5rem;
-  align-items: center;
-  justify-content: space-between;
-  
-  @media (max-width: 640px) { display: flex; }
-  
-  .theme-toggle {
-    font-size: 1.5rem;
-    color: var(--color-yellow);
-    background: none; border: none;
-  }
-  .mobile-clock {
-    font-weight: bold;
-    color: var(--text-accent);
-  }
-}
-
-// --- Theme Toggle (Desktop) ---
-.theme-toggle {
-    background: none; border: none; cursor: pointer;
-    color: var(--color-yellow);
-    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    &:hover { transform: rotate(90deg) scale(1.1); }
 }

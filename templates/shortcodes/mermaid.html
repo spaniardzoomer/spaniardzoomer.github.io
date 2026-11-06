@@ -1,3 +1,6 @@
-<div class="mermaid">
+{% component mermaid() %}
+{# <pre> instead of <div>: markdown keeps <pre> blocks intact across blank lines #}
+<pre class="mermaid">
     {{ body }}
-</div>
+</pre>
+{% endcomponent mermaid %}

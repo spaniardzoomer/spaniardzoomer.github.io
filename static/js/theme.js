@@ -1,28 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Select ALL theme toggle buttons (Desktop & Mobile)
-    const toggleBtns = document.querySelectorAll('.theme-toggle');
+    const switches = document.querySelectorAll('.theme-switch');
     const root = document.documentElement;
 
-    // Function to update ALL icons
-    const updateIcons = () => {
-        const isLight = root.getAttribute('data-theme') === 'light';
-        toggleBtns.forEach(btn => {
-            const icon = btn.querySelector('i');
-            if(icon) icon.className = isLight ? 'ph ph-moon-stars' : 'ph ph-sun-dim';
-        });
+    // The switch is "on" in dark mode; CSS moves the knob from the theme attribute.
+    const sync = () => {
+        const isDark = root.getAttribute('data-theme') !== 'light';
+        switches.forEach(btn => btn.setAttribute('aria-checked', String(isDark)));
     };
 
-    // Initialize
-    updateIcons();
+    sync();
 
-    // Attach Click Event to EACH button
-    toggleBtns.forEach(btn => {
+    switches.forEach(btn => {
         btn.addEventListener('click', () => {
-            const currentTheme = root.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
             root.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
-            updateIcons();
+            sync();
         });
     });
 });

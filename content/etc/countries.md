@@ -2,17 +2,17 @@
 title = "Countries I've Been To"
 +++
 
-{% note(title="Note", type="info") %}
+{% <note title="Note" type="info"> %}
 All the pictures shown here were taken by me.
-{% end %}
+{% </note> %}
 
 # Spain 🇪🇸
 
 Well, duh. I live here. What can I say? Beautiful country, awesome food, friendly people. You can go to the most lost, random, small town in the middle of nowhere, and it will still have bars with delicious food, nice owners, a beautiful church, and a main square. I honestly think you could spend half your life exploring this country and never get tired of it.
 
 <p style="display:flex; gap: 10px;">
-    {{ image(path="img/gandia.jpg", width=300) }}
-    {{ image(path="img/valencia.jpg", width=300) }}
+    {{ <image path="img/gandia.jpg" width={300} /> }}
+    {{ <image path="img/valencia.jpg" width={300} /> }}
 </p>
 
 > First picture is Gandia, Valencia. Second picture is the City of Arts and Sciences in Valencia.
@@ -45,9 +45,9 @@ I even went to Rovaniemi and visited Santa Claus Village! I rode in a dog sled a
 * **School Food:** The food on the campus I was staying at was...really bad. Lunch at my home university in Spain was so much better and only cost about 2-3€ more.
 
 <p style="display:flex; gap: 10px;">
-    {{ image(path="img/helsinki.jpg", width=200) }}
-    {{ image(path="img/rovaniemi.jpg", width=200) }}
-    {{ image(path="img/savonlinna.jpg", width=200) }}
+    {{ <image path="img/helsinki.jpg" width={200} /> }}
+    {{ <image path="img/rovaniemi.jpg" width={200} /> }}
+    {{ <image path="img/savonlinna.jpg" width={200} /> }}
 </p>
 
 > First picture is Helsinki. Second picture is in Syväsenvaara Obervation Tower, Rovaniemi. Third picture is the Savonlinna Castle.
@@ -57,7 +57,7 @@ I even went to Rovaniemi and visited Santa Claus Village! I rode in a dog sled a
 I visited Viana do Castelo, Oporto, and Braga.
 
 <p style="display:flex; gap: 10px;">
-    {{ image(path="img/portugal.jpg", width=200, alt="Gandia") }}
+    {{ <image path="img/portugal.jpg" width={200} alt="Gandia" /> }}
 </p>
 
 > The picture is from the Bom Jesus do Monte sanctuary.
@@ -67,8 +67,8 @@ I visited Viana do Castelo, Oporto, and Braga.
 Estonia is just a ferry ride from Helsinki, so it is compulsory to visit if you travel to Finland. Tallinn is a beautiful city, and I even got to visit the famous Christmas market there.
 
 <p style="display:flex; gap: 10px;">
-    {{ image(path="img/tallin.jpg", width=200) }}
-    {{ image(path="img/tallin_christmas_market.jpg", width=200) }}
+    {{ <image path="img/tallin.jpg" width={200} /> }}
+    {{ <image path="img/tallin_christmas_market.jpg" width={200} /> }}
 </p>
 
 > First picture is the old town of Tallin. Second picture is from Tallin's Christmas market.
@@ -78,15 +78,15 @@ Estonia is just a ferry ride from Helsinki, so it is compulsory to visit if you 
 I visited Paris with my family since it is just a train ride away from Barcelona. I don't have much to say other than it was great. We visited the classics: The Eiffel Tower, the Louvre, the Arc de Triomphe...
 
 <p style="display:flex; gap: 10px;">
-    {{ image(path="img/eiffel.jpg", width=200) }}
-    {{ image(path="img/louvre.jpg", width=200) }}
+    {{ <image path="img/eiffel.jpg" width={200} /> }}
+    {{ <image path="img/louvre.jpg" width={200} /> }}
 </p>
 
 > First picture is the Eiffel tower. Second picture is in the Louvre Museum.
 
-{% note(title="Did you know?", type="info") %}
+{% <note title="Did you know?" type="info"> %}
 Until recently, the Louvre museum used Nitendos 3DS as guide devices. How cool is that!
-{% end %}
+{% </note> %}
 
 
 # Italy 🇮🇹

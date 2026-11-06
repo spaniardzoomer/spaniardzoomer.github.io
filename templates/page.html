@@ -1,62 +1,36 @@
 {% extends "base.html" %}
 
-<!-- Automatically set the window title to the file path -->
-{% block window_path %}~/{{ page.relative_path }}{% endblock %}
-{% block prompt_cmd %}cat {{ page.relative_path | split(pat="/") | last }}{% endblock %}
+{% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
 
-<!-- Automatically set the prompt directory -->
-{% block prompt_path %}
-    {% if page.components %}
-        ~/{{ page.components | slice(end=-1) | join(sep="/") }}
-    {% else %}
-        ~/
-    {% endif %}
-{% endblock %}
+{# DOS-style path of the markdown file, e.g. C:\BLOG\BEFORE_MAIN.MD #}
+{% block window_title %}C:{% for part in page.relative_path | split(pat="/") %}\{{ part | upper }}{% endfor %}{% endblock window_title %}
+{% block window_tag %}記事{% endblock window_tag %}
 
 {% block content %}
 <article class="post-layout">
-    
-    <!-- Post Header -->
+
     <header class="post-header">
         <h1 class="post-title">{{ page.title }}</h1>
-        
-        <div class="post-meta">
-            <!-- Date -->
-            {% if page.date %}
-            <div class="meta-item">
-                <i class="ph ph-calendar"></i> <span>{{ page.date }}</span>
-            </div>
-            {% endif %}
-            
-            <!-- Reading Time -->
-            {% if page.reading_time %}
-            <div class="meta-item">
-                <i class="ph ph-clock"></i> <span>{{ page.reading_time }} min read</span>
-            </div>
-            {% endif %}
-        </div>
 
-        <!-- Tags -->
-        {% if page.taxonomies.tags %}
-        <div class="post-tags">
-            <span class="tag-label">tags:</span>
-            {% for tag in page.taxonomies.tags %}
-            <a href="{{ get_taxonomy_url(kind="tags", name=tag) }}" class="tag">#{{ tag }}</a>
-            {% endfor %}
+        <div class="post-meta">
+            {% if page.date %}<span>{{ page.date }}</span>{% endif %}
+            {% if page.reading_time %}<span>{{ page.reading_time }} min read</span>{% endif %}
+            {% if page.taxonomies.tags %}
+            <span class="post-tags">
+                {% for tag in page.taxonomies.tags %}
+                <a href="{{ get_taxonomy_url(kind="tags", term=tag) }}" class="tag">#{{ tag }}</a>
+                {% endfor %}
+            </span>
+            {% endif %}
         </div>
-        {% endif %}
     </header>
 
-    <!-- Markdown Content -->
     <div class="post-content">
         {{ page.content | safe }}
     </div>
 
-    <!-- Footer / Navigation -->
     <footer class="post-footer">
-        <a href="javascript:history.back()" class="back-link">
-            <i class="ph ph-arrow-return-left"></i> cd ..
-        </a>
+        <a href="javascript:history.back()" class="back-link">◂ CD ..</a>
         <span class="eof">-- EOF --</span>
     </footer>
 

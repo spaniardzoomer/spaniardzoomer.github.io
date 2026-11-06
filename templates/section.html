@@ -1,66 +1,33 @@
 {% extends "base.html" %}
 
-{% block window_path %}
-    {# Single Section: Shows directory name #}
-    ~/{{ section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") }}
-{% endblock %}
+{% block title %}{{ section.title }} · {{ config.title }}{% endblock title %}
 
-{% block prompt_path %}
-    ~/{{ section.path | trim_start_matches(pat="/") }}
-{% endblock %}
-
-{% block prompt_cmd %}
-    {% if section.pages %}
-        ls -la
-    {% else %}
-        cat index.md
-    {% endif %}
-{% endblock %}
+{% block window_title %}{% set dir = section.path | trim_start(pat="/") | trim_end(pat="/") | upper %}{% if section.pages %}C:\{{ dir }}&gt; DIR /O-D{% else %}C:\{{ dir }}\INDEX.MD{% endif %}{% endblock window_title %}
+{% block window_tag %}{% if section.pages %}一覧{% else %}{{ section.title }}{% endif %}{% endblock window_tag %}
 
 {% block content %}
     {% if section.pages %}
-        <!-- LIST VIEW (ls -la style) -->
-        <div class="ls-grid">
-            <div class="ls-total">total {{ section.pages | length }}</div>
-
+        <h1 class="post-title">{{ section.title }}</h1>
+        <ul class="dir-list">
             {% for page in section.pages %}
-                <!-- Permissions -->
-                <span class="ls-perms">-rw-r--r--</span>
-                
-                <!-- User -->
-                <span class="ls-user">{{ config.extra.user | default(value="user") }}</span>
-                
-                <!-- Size / Reading Time -->
-                <span class="ls-size">
-                    {% if page.reading_time %}{{ page.reading_time }}m{% else %}4.0K{% endif %}
-                </span>
-                
-                <!-- Date (With Fallback for pages without date) -->
-                <span class="ls-date">
-                    {% if page.date %}
-                        {{ page.date }}
-                    {% endif %}
-                </span>
+            <li class="dir-list__item">
+                <span class="dir-list__date">{% if page.date %}{{ page.date }}{% else %}----------{% endif %}</span>
                 {% if page.extra.repo %}
-                    <a href="{{ page.extra.repo }}" target="_blank" class="ls-name" style="color: var(--text-accent-2);">
-                        {{ page.title }} <span style="color: var(--text-dim); font-weight: normal; opacity: 0.8;">-> {{ page.extra.repo }}</span>
-                    </a>
+                    <a href="{{ page.extra.repo }}" target="_blank" rel="noopener" class="dir-list__name">{{ page.title }}</a>
+                    <span class="dir-list__target">→ {{ page.extra.repo | trim_start(pat="https://") }}</span>
                 {% else %}
-                    <a href="{{ page.permalink }}" class="ls-name">
-                        {{ page.title }}
-                    </a>
+                    <a href="{{ page.permalink }}" class="dir-list__name">{{ page.title }}</a>
+                    {% if page.reading_time %}<span class="dir-list__size">{{ page.reading_time }} min</span>{% endif %}
                 {% endif %}
-
                 {% if page.description %}
-                    <div style="grid-column: 1 / -1; color: var(--text-dim); font-size: 0.85em; margin-top: -0.25rem; padding-left: 1rem; opacity: 0.8;">
-                        # {{ page.description }}
-                    </div>
+                    <p class="dir-list__desc">{{ page.description }}</p>
                 {% endif %}
+            </li>
             {% endfor %}
-        </div>
+        </ul>
+        <p class="dir-list__total">{{ section.pages | length }} file(s)</p>
 
     {% else %}
-        <!-- SINGLE PAGE VIEW (Render the _index.md content) -->
         <article class="post-layout">
             <header class="post-header">
                 <h1 class="post-title">{{ section.title }}</h1>

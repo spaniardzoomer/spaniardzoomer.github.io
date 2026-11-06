@@ -1,22 +1,8 @@
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrains Mono Regular Nerd Font Complete.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/fonts/JetBrains Mono Bold Nerd Font Complete.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@mixin flex-center-y {
-  display: flex;
-  align-items: center;
+// Code uses the same pixel font as the rest of the site, so everything matches.
+:root {
+  // DotGothic16 (pixel, Latin + Japanese) for everything, code included
+  --font-ui: 'DotGothic16', 'MS Gothic', 'Osaka', monospace;
+  --font-mono: var(--font-ui);
 }
 
 *, *::before, *::after {
@@ -24,27 +10,19 @@
 }
 
 html {
-  @media (max-width: 640px) {
-    font-size: 14px;
-  }
+  // DotGothic16 is drawn on a 16px grid, so it is crispest at 16px
+  font-size: 16px;
 }
 
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  background-color: var(--bg-body);
-  
-  // VIGNETTE EFFECT: Adds depth to the background
-  background-image: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.2) 100%);
-  
-  color: var(--text-main);
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-ui);
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.7;
 }
 
 a {
@@ -52,7 +30,12 @@ a {
   color: inherit;
 }
 
-// --- Custom Scrollbar (Nerdy & Minimal) ---
+::selection {
+  background: var(--pink);
+  color: var(--bg);
+}
+
+// --- Scrollbar ---
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -61,33 +44,6 @@ a {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-dim);
-  border-radius: 0; // Square corners for terminal feel
-  &:hover { background: var(--text-dim); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-3px); }
-  100% { transform: translateY(0px); }
-}
-
-@keyframes scroll-text {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  background: var(--border);
+  &:hover { background: var(--fg-dim); }
 }

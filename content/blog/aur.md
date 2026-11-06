@@ -43,12 +43,12 @@ For today's example, I'm going to use **Brave Browser**. (I personally use **Lib
 
 First, head over to the AUR website and search for the package you want.
 
-{% note(title="Careful!", type="warning") %}
+{% <note title="Careful!" type="warning"> %}
 You will often see multiple versions of the same package. Usually, one of them has a `-bin` suffix (for example, `brave-bin`).
 
 **You generally want the `-bin` version.**
 This stands for *binary release*, meaning it's already compiled. If you install the version *without* `-bin`, it will compile the software from source on your machine. Compiling a web browser can take a *very* long time, so if you want to save time, go with the binary.
-{% end %}
+{% </note> %}
 
 **Before you download anything:**
 
@@ -133,9 +133,9 @@ The `-j` flag controls how many threads are used during compilation. I recommend
 MAKEFLAGS="-j16"
 ```
 
-{% note(title="Quick Tip", type="tip") %}
+{% <note title="Quick Tip" type="tip"> %}
 If you're not sure how many processing units your system has, run `nproc` in your terminal and use that number.
-{% end %}
+{% </note> %}
 
 ---
 
@@ -197,9 +197,9 @@ Now let's talk about automation. The two most popular AUR helpers are:
 
 I've always used **Yay**, so that's what I'll demonstrate here—but Paru should be good as well.
 
-{% note(title="Info", type="info") %}
+{% <note title="Info" type="info"> %}
 Yay and Paru are *themselves* AUR packages, so you must install them using the **manual method** first.
-{% end %}
+{% </note> %}
 
 ---
 
@@ -218,10 +218,10 @@ During installation, Yay will prompt you with a few questions:
 2. **Show diffs?**
    **Always choose "All."** This lets you inspect the `PKGBUILD`!
 
-{% note(title="Important", type="warning") %}
+{% <note title="Important" type="warning"> %}
 **Do NOT run Yay with `sudo`.**
 Yay handles permissions internally and will prompt you for your password when necessary. Running it with `sudo` will cause it to yell at you.
-{% end %}
+{% </note> %}
 
 ---
 
